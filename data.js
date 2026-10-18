@@ -5,7 +5,7 @@ window.TABLERO = {
   actualizado: "2026-10-18",
 
   proyecto: {
-    nombre: "Classroom",
+    nombre: "ClassHub",
     frase: "",             // qué es, en una sola frase
     preguntaOrigen: "",    // la pregunta que hizo nacer el proyecto
     duracion: "2 años de trabajo",
