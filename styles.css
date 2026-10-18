@@ -399,3 +399,37 @@ pre.prompt {
   .pasos li { grid-template-columns: 28px 1fr; }
   .pasos li .tag { grid-column: 2; justify-self: start; }
 }
+
+/* Conceptos */
+.conceptos { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.concepto-card {
+  display: flex; flex-direction: column; height: 100%; text-decoration: none; overflow: hidden;
+  border: 1px solid var(--borde); border-radius: 10px; background: var(--superficie);
+  transition: box-shadow 200ms var(--curva), transform 200ms var(--curva);
+}
+.concepto-card:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); transform: translateY(-2px); }
+.concepto-card img, .concepto-card .sin-video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; background: var(--superficie-2); }
+.concepto-card .sin-video { display: grid; place-items: center; font-size: 34px; color: var(--texto-2); }
+.concepto-txt { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 16px; }
+.concepto-txt strong { color: var(--texto-fuerte); font-size: 16px; line-height: 1.3; }
+.concepto-txt small { color: var(--texto-2); font-size: 14px; line-height: 1.45; }
+.concepto-ficha { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin-top: 32px; align-items: start; }
+.concepto-ficha .panel + .panel, .concepto-ficha aside .panel + .panel { margin-top: 14px; }
+.mini-video { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
+.mini-video img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; border: 1px solid var(--borde); background: var(--superficie-2); }
+.mini-video:not(.grande) { flex-direction: row; align-items: center; gap: 12px; }
+.mini-video:not(.grande) img { width: 120px; flex: none; }
+.mini-txt { display: flex; gap: 8px; align-items: flex-start; }
+.mini-txt i { font-size: 22px; color: var(--rojo-tx); flex: none; margin-top: 1px; }
+.mini-txt strong { display: block; color: var(--texto-fuerte); font-size: 15px; line-height: 1.35; }
+.mini-txt small { display: block; color: var(--texto-2); font-size: 13px; margin-top: 2px; }
+.mini-video:hover strong { text-decoration: underline; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 12px; text-decoration: none;
+  border: 1px solid var(--borde); border-radius: 9999px; background: var(--superficie-2); font-size: 14px; color: var(--texto-fuerte);
+}
+.chip i { color: var(--texto-2); }
+.chip:hover { background: var(--superficie); }
+@media (max-width: 900px) { .conceptos { grid-template-columns: repeat(2, 1fr); } .concepto-ficha { grid-template-columns: 1fr; } }
+@media (max-width: 767px) { .conceptos { grid-template-columns: 1fr 1fr; gap: 10px; } .concepto-txt { padding: 10px 12px 12px; } .concepto-txt small { display: none; } .tabs a { font-size: 10.5px; } }

@@ -70,9 +70,82 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     if (p.preguntaOrigen) l.push(`La pregunta que dio origen al proyecto: ${p.preguntaOrigen}`, '');
     l.push(`Equipo: ${D.equipo.join(', ')}. ${p.programa}. ${p.duracion}. Exposición de 15 minutos.`, '');
     D.esferas.forEach(e => l.push(fichaMarkdown(e), ''));
+    l.push(conceptosMarkdown(), '');
     l.push('# Cómo exponer', '');
     D.guia.forEach(g => { l.push(`## ${g.titulo}`, ...g.puntos.map(x => `- ${x}`), ''); });
     return l.join('\n');
+  }
+
+  // ---------- Conceptos ----------
+  const CONC = D.conceptos || [];
+  const concepto = id => CONC.find(c => c.id === id);
+  const urlVideo = v => `https://www.youtube.com/watch?v=${v.id}`;
+
+  function conceptoMarkdown(c) {
+    const l = [`## ${c.nombre}`, '', `Qué es: ${c.que}`, '', `Analogía: ${c.analogia}`, '', `Cómo lo usa ${nombreProyecto()}: ${c.enClassHub}`, '',
+      `Pregunta probable: ${c.pregunta.p}`, `Respuesta: ${c.pregunta.r}`];
+    for (const v of [c.video, c.extra].filter(Boolean)) l.push('', `Video: ${v.titulo} (${v.canal}) ${urlVideo(v)}`);
+    return l.join('\n');
+  }
+
+  function conceptosMarkdown() {
+    const l = [`# Conceptos clave de ${nombreProyecto()}`, ''];
+    for (const g of D.gruposConceptos || []) {
+      l.push(`# ${g.nombre}: ${g.idea}`, '');
+      CONC.filter(c => c.grupo === g.id).forEach(c => l.push(conceptoMarkdown(c), ''));
+    }
+    return l.join('\n');
+  }
+
+  const miniatura = (v, grande) => `<a class="mini-video ${grande ? 'grande' : ''}" href="${urlVideo(v)}" target="_blank" rel="noopener">
+      <img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">
+      <span class="mini-txt"><i class="ph-bold ph-play-circle"></i><span><strong>${esc(v.titulo)}</strong><small>${esc(v.canal)} · YouTube</small></span></span>
+    </a>`;
+
+  function vistaConceptos() {
+    const grupos = (D.gruposConceptos || []).map((g, gi) => {
+      const items = CONC.filter(c => c.grupo === g.id).map((c, i) => `
+        <li class="entra" style="--i:${gi + i}">
+          <a class="concepto-card" href="#/concepto/${c.id}">
+            ${c.video ? `<img src="https://i.ytimg.com/vi/${c.video.id}/mqdefault.jpg" alt="" loading="lazy" width="320" height="180">` : '<span class="sin-video"><i class="ph-bold ph-book-open-text"></i></span>'}
+            <span class="concepto-txt"><strong>${esc(c.nombre)}</strong><small>${esc(c.que.split('. ')[0])}.</small></span>
+          </a>
+        </li>`).join('');
+      return `<section class="bloque"><div class="bloque-cab"><h2>${esc(g.nombre)}</h2><p>${esc(g.idea)}</p></div><ul class="conceptos">${items}</ul></section>`;
+    }).join('');
+    return `
+      <section class="entra"><h1>Conceptos clave</h1>
+        <p class="bajada">Todo lo que hay que entender para hablar con autoridad: qué es cada cosa, cómo la usa ${esc(nombreProyecto())} y un video corto en español.</p>
+        <div class="acciones"><button class="btn btn-2" data-conceptos>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button></div>
+      </section>
+      ${grupos}`;
+  }
+
+  function vistaConcepto(id) {
+    const c = concepto(id);
+    if (!c) return `<section><h1>Ese concepto no existe</h1><div class="acciones"><a class="btn btn-1" href="#/conceptos">Ver conceptos</a></div></section>`;
+    const g = (D.gruposConceptos || []).find(x => x.id === c.grupo);
+    const enEsferas = Object.entries(D.conceptosPorEsfera || {}).filter(([, ids]) => ids.includes(c.id)).map(([n]) => esfera(Number(n))).filter(Boolean);
+    const i = CONC.indexOf(c), ant = CONC[i - 1], sig = CONC[i + 1];
+    return `
+      <nav class="migas" aria-label="Ubicación"><a href="#/conceptos">Conceptos</a><span aria-hidden="true">/</span><span>${esc(g ? g.nombre : '')}</span></nav>
+      <section class="ficha-cab entra"><h1>${esc(c.nombre)}</h1><p class="pregunta">${esc(c.que)}</p></section>
+      <div class="concepto-ficha">
+        <div>
+          <div class="panel entra" style="--i:1"><h3>Para entenderlo fácil</h3><p class="frase">${esc(c.analogia)}</p></div>
+          <div class="panel entra" style="--i:2"><h3>Cómo lo usa ${esc(nombreProyecto())}</h3><p>${esc(c.enClassHub)}</p></div>
+          <div class="panel entra" style="--i:3"><h3>Pregunta probable del jurado</h3>
+            <div class="acordeon"><details open><summary>${esc(c.pregunta.p)}</summary><ul><li>${esc(c.pregunta.r)}</li></ul></details></div></div>
+        </div>
+        <aside>
+          ${c.video ? `<div class="panel entra" style="--i:2"><h3>Video recomendado</h3>${miniatura(c.video, true)}${c.extra ? `<p class="frase-lbl" style="margin-top:14px">Otro video</p>${miniatura(c.extra)}` : ''}</div>` : ''}
+          ${enEsferas.length ? `<div class="panel entra" style="--i:3"><h3>Aparece en</h3><div class="chips">${enEsferas.map(e => `<a class="chip" href="#/esfera/${e.n}">${e.n}. ${esc(e.titulo)}</a>`).join('')}</div></div>` : ''}
+        </aside>
+      </div>
+      <nav class="nav-esferas" aria-label="Recorrido de conceptos">
+        ${ant ? `<a href="#/concepto/${ant.id}"><small><i class="ph-bold ph-arrow-left"></i> Anterior</small><span>${esc(ant.nombre)}</span></a>` : '<span></span>'}
+        ${sig ? `<a class="sig" href="#/concepto/${sig.id}"><small>Siguiente <i class="ph-bold ph-arrow-right"></i></small><span>${esc(sig.nombre)}</span></a>` : `<a class="sig" href="#/conceptos"><small>Terminaste</small><span>Volver a conceptos</span></a>`}
+      </nav>`;
   }
 
   async function copiar(texto) {
@@ -302,6 +375,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       <div class="panel"><h3>Qué tiene que quedar claro</h3><ul class="lista">${e.incluye.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
       <div class="panel"><h3>El contenido</h3>${contenido}</div>
       ${frases}
+      ${(D.conceptosPorEsfera?.[e.n] || []).length ? `<div class="panel"><h3>Conceptos para repasar</h3><div class="chips">${D.conceptosPorEsfera[e.n].map(id => concepto(id)).filter(Boolean).map(c => `<a class="chip" href="#/concepto/${c.id}"><i class="ph-bold ${c.video ? 'ph-play-circle' : 'ph-book-open-text'}"></i>${esc(c.nombre)}</a>`).join('')}</div></div>` : ''}
       <div class="panel"><h3>Material de estudio</h3>${medios(e)}</div>
       <div class="panel"><h3>Preguntas probables del jurado</h3>${preguntas}</div>
       <div class="panel"><h3>Para NotebookLM</h3>
@@ -489,7 +563,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   function render() {
     const partes = location.hash.replace(/^#\/?/, '').split('/');
     const ruta = partes[0] || 'mapa';
-    const activa = ruta === 'esfera' ? 'mapa' : ruta;
+    const activa = ruta === 'esfera' ? 'mapa' : ruta === 'concepto' ? 'conceptos' : ruta;
     document.querySelectorAll('.tabs a').forEach(a => {
       if (a.dataset.ruta === activa) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
@@ -507,8 +581,9 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     cerrarHoja(); previa = null;
     document.body.classList.remove('en-mapa');
     app.dataset.vista = ruta;
-    const vistas = { avance: vistaAvance, guia: vistaGuia, estudio: vistaEstudio, notebooklm: vistaNotebook, fuentes: vistaFuentes };
-    app.innerHTML = (vistas[ruta] || (() => `<section><h1>Esta página no existe</h1><div class="acciones"><a class="btn btn-1" href="#/mapa">Ir al mapa</a></div></section>`))();
+    const vistas = { avance: vistaAvance, guia: vistaGuia, estudio: vistaEstudio, notebooklm: vistaNotebook, fuentes: vistaFuentes,
+      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]) };
+    app.innerHTML = (vistas[ruta] ||(() => `<section><h1>Esta página no existe</h1><div class="acciones"><a class="btn btn-1" href="#/mapa">Ir al mapa</a></div></section>`))();
     const h1 = app.querySelector('h1');
     document.title = `${h1 ? h1.textContent : 'Tablero'} · ${nombreProyecto()}`;
     window.scrollTo(0, 0);
@@ -524,6 +599,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     }
     if (ev.target.closest('[data-centrar]')) centrar();
     if (ev.target.closest('[data-todo]')) descargar(`${nombreProyecto()} - todas las esferas.md`, todoMarkdown());
+    if (ev.target.closest('[data-conceptos]')) descargar(`${nombreProyecto()} - conceptos clave.md`, conceptosMarkdown());
   });
 
   window.addEventListener('hashchange', render);
