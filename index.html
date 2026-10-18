@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C1B19" media="(prefers-color-scheme: dark)">
+<title>Tablero del proyecto de grado</title>
+<meta name="description" content="Mapa para aprender y exponer el proyecto de grado SENA: del porqué al cómo, en 16 esferas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="luz" aria-hidden="true"></div>
+<header class="barra">
+  <a class="marca" href="#/mapa">Proyecto de grado</a>
+  <nav class="tabs" aria-label="Secciones">
+    <a href="#/mapa" data-ruta="mapa"><i class="ph-bold ph-graph" aria-hidden="true"></i><span>Mapa</span></a>
+    <a href="#/avance" data-ruta="avance"><i class="ph-bold ph-flag-banner" aria-hidden="true"></i><span>Avance</span></a>
+    <a href="#/guia" data-ruta="guia"><i class="ph-bold ph-presentation-chart" aria-hidden="true"></i><span>Exponer</span></a>
+    <a href="#/estudio" data-ruta="estudio"><i class="ph-bold ph-brain" aria-hidden="true"></i><span>Estudiar</span></a>
+    <a href="#/notebooklm" data-ruta="notebooklm"><i class="ph-bold ph-notebook" aria-hidden="true"></i><span>NotebookLM</span></a>
+  </nav>
+</header>
+<main id="app" tabindex="-1"></main>
+<div class="velo" id="velo" hidden></div>
+<section class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-titulo" hidden>
+  <div class="hoja-asa" id="hoja-asa"><span></span></div>
+  <div class="hoja-cab">
+    <span class="mono" id="hoja-pos"></span>
+    <button class="icono" id="hoja-cerrar" aria-label="Cerrar y volver al mapa"><i class="ph-bold ph-x"></i></button>
+  </div>
+  <div class="hoja-cuerpo" id="hoja-cuerpo"></div>
+</section>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

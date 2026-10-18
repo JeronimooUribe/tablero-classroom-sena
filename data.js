@@ -1,0 +1,291 @@
+// Fuente única del tablero. Todo lo que se ve sale de aquí.
+// Para llenar una esfera: editar su `contenido`, `preguntas` y `media`, y cambiar `estado` a "lista".
+
+window.TABLERO = {
+  actualizado: "2026-10-18",
+
+  proyecto: {
+    nombre: "Classroom",
+    frase: "",             // qué es, en una sola frase
+    preguntaOrigen: "",    // la pregunta que hizo nacer el proyecto
+    duracion: "2 años de trabajo",
+    programa: "Media técnica articulada con el SENA",
+  },
+
+  equipo: ["Jerónimo Uribe Garcés", "Juan Sebastián García", "Miguel Ángel Valencia", "Diego"],
+
+  checklist: [
+    { titulo: "Investigar cómo se hace una exposición excelente y cómo aprenderla rápido", estado: "hecho",
+      detalle: "Las pautas están en la Guía para exponer, el Plan de estudio y Cómo usar NotebookLM." },
+    { titulo: "Encontrar el proyecto en el computador", estado: "siguiente",
+      detalle: "Guía paso a paso para llegar a la carpeta, abrirla y hacerlo correr. Queda en la esfera 15." },
+    { titulo: "Investigar el proyecto a fondo y llenar las 16 esferas", estado: "pendiente",
+      detalle: "Cada esfera recibe su contenido real, sus preguntas del jurado y sus videos de NotebookLM." },
+  ],
+
+  bloques: [
+    { id: "porque",  nombre: "El porqué",  idea: "Por qué existe el proyecto", color: "rojo" },
+    { id: "que",     nombre: "El qué",     idea: "Qué hace y para quién",      color: "azul" },
+    { id: "como",    nombre: "El cómo",    idea: "Cómo está construido",       color: "verde" },
+    { id: "proceso", nombre: "El proceso", idea: "Cómo lo hicimos y qué logramos", color: "amarillo" },
+    { id: "bastidores", nombre: "Bastidores", idea: "No se expone, pero todos lo dominan", color: "gris" },
+  ],
+
+  // Reparto de los 15 minutos. Cada bloque de exposición es de una persona.
+  tiempos: [
+    { bloque: "porque",  desde: "0:00",  hasta: "3:15",  responsable: "Por asignar" },
+    { bloque: "que",     desde: "3:15",  hasta: "7:15",  responsable: "Por asignar", nota: "Incluye 2 minutos de demo" },
+    { bloque: "como",    desde: "7:15",  hasta: "10:45", responsable: "Por asignar" },
+    { bloque: "proceso", desde: "10:45", hasta: "14:15", responsable: "Por asignar" },
+    { bloque: "colchon", desde: "14:15", hasta: "15:00", responsable: "Todos", nota: "Colchón para imprevistos" },
+  ],
+
+  esferas: [
+    { n: 1, bloque: "porque", titulo: "Presentación y gancho", segundos: 45, estado: "vacia",
+      pregunta: "¿Quiénes somos, qué hicimos y por qué deberían escucharnos?",
+      incluye: ["Nombre del proyecto y una frase que lo define", "Quiénes somos (los 4, en una línea)",
+                "Un gancho: un dato, una escena o una pregunta que atrape en 10 segundos",
+                "El mapa de la exposición: qué van a ver y en qué orden"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 2, bloque: "porque", titulo: "La pregunta de origen y el problema", segundos: 80, estado: "vacia",
+      pregunta: "¿Qué pregunta o qué problema hizo nacer este proyecto?",
+      incluye: ["La pregunta inicial, dicha tal cual", "A quién le duele el problema y cómo se nota",
+                "Cómo se resolvía antes (o por qué no se resolvía)", "Una evidencia: un dato, una encuesta, un caso real"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 3, bloque: "porque", titulo: "Objetivos y alcance", segundos: 70, estado: "vacia",
+      pregunta: "¿Qué nos propusimos lograr y hasta dónde llega el proyecto?",
+      incluye: ["Objetivo general en una frase", "Objetivos específicos (3 o 4)",
+                "Qué SÍ hace el proyecto", "Qué NO hace, a propósito (sus límites)"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 4, bloque: "que", titulo: "La solución", segundos: 60, estado: "vacia",
+      pregunta: "¿Qué es el proyecto y para qué sirve?",
+      incluye: ["Qué es, en lenguaje de calle", "Para qué sirve: el beneficio concreto",
+                "Las 3 a 5 funciones principales", "Por qué esta solución y no otra"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 5, bloque: "que", titulo: "Usuarios y requisitos", segundos: 60, estado: "vacia",
+      pregunta: "¿Quién lo usa y qué necesita poder hacer?",
+      incluye: ["Tipos de usuario (roles) y qué puede hacer cada uno", "Casos de uso o historias de usuario principales",
+                "Requisitos funcionales (lo que hace)", "Requisitos no funcionales (rapidez, seguridad, facilidad de uso)"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 6, bloque: "que", titulo: "Demo del flujo principal", segundos: 120, estado: "vacia",
+      pregunta: "¿Cómo se ve funcionando, de principio a fin?",
+      incluye: ["Guion fijo de la demo, paso por paso", "Datos de prueba ya cargados (nada se escribe en vivo si no hace falta)",
+                "Qué decir mientras se hace cada clic", "Video de respaldo listo por si algo falla"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 7, bloque: "como", titulo: "Arquitectura", segundos: 70, estado: "vacia",
+      pregunta: "¿Cuáles son las piezas del sistema y cómo se conectan?",
+      incluye: ["Las piezas: lo que ve el usuario, el servidor, la base de datos, servicios externos",
+                "El viaje de un dato de punta a punta, con un ejemplo", "Un diagrama simple que todos sepan dibujar en un tablero",
+                "Dónde vive (en un computador, en internet, en un servidor)"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 8, bloque: "como", titulo: "Lenguajes y tecnologías", segundos: 70, estado: "vacia",
+      pregunta: "¿Con qué está hecho y por qué elegimos eso?",
+      incluye: ["Lenguajes de programación y en qué pieza se usa cada uno", "Frameworks, librerías y herramientas",
+                "Por qué se eligió cada uno", "Qué alternativas había y por qué se descartaron"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 9, bloque: "como", titulo: "Datos y base de datos", segundos: 70, estado: "vacia",
+      pregunta: "¿Qué información guarda el sistema y cómo la organiza?",
+      incluye: ["Qué se guarda y para qué", "Las tablas o entidades principales y cómo se relacionan",
+                "El modelo entidad-relación, explicado en simple", "Cómo se protege y respalda esa información"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 10, bloque: "proceso", titulo: "Metodología e historia de 2 años", segundos: 75, estado: "vacia",
+      pregunta: "¿Cómo lo construimos a lo largo de dos años?",
+      incluye: ["Las fases del proyecto formativo SENA: análisis, planeación, ejecución y evaluación",
+                "Línea de tiempo con los hitos reales", "Cómo nos organizamos y repartimos el trabajo",
+                "Herramientas de trabajo en equipo (control de versiones, tableros, etc.)"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 11, bloque: "proceso", titulo: "Calidad, seguridad y retos", segundos: 70, estado: "vacia",
+      pregunta: "¿Cómo sabemos que funciona bien y qué problemas tuvimos que vencer?",
+      incluye: ["Qué pruebas se hicieron y qué resultados dieron", "Cómo se protegen los usuarios y sus datos",
+                "Los 2 o 3 problemas más difíciles y cómo se resolvieron", "Qué haríamos diferente"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 12, bloque: "proceso", titulo: "Resultados, futuro y cierre", segundos: 65, estado: "vacia",
+      pregunta: "¿Qué logramos, qué sigue y con qué idea se queda el jurado?",
+      incluye: ["Objetivos cumplidos, uno por uno, contra lo prometido en la esfera 3", "Lo que aprendimos como equipo",
+                "Mejoras y siguiente versión", "Cierre: volver a la pregunta de origen y responderla"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 13, bloque: "bastidores", titulo: "Glosario", segundos: 0, estado: "vacia",
+      pregunta: "¿Qué significa cada palabra técnica que vamos a decir?",
+      incluye: ["Cada término técnico explicado en una frase", "Un ejemplo del proyecto para cada término",
+                "Las siglas dichas completas"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 14, bloque: "bastidores", titulo: "Banco de preguntas del jurado", segundos: 0, estado: "vacia",
+      pregunta: "¿Qué nos pueden preguntar y cómo lo respondemos bien?",
+      incluye: ["Las preguntas probables de cada bloque", "Una respuesta modelo para cada una: idea, argumento y ejemplo",
+                "Quién responde cada tipo de pregunta"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 15, bloque: "bastidores", titulo: "El proyecto en el computador", segundos: 0, estado: "vacia",
+      pregunta: "¿Dónde está el proyecto y cómo se abre y se corre?",
+      incluye: ["La ruta exacta de la carpeta", "Qué hay en cada carpeta principal", "Cómo se instala y se pone a correr, paso a paso",
+                "Qué hacer si no arranca"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+
+    { n: 16, bloque: "bastidores", titulo: "Plan B y logística", segundos: 0, estado: "vacia",
+      pregunta: "¿Qué hacemos si algo falla el día de la exposición?",
+      incluye: ["Video de la demo guardado sin internet (USB y celular)", "Equipo: computador, cargador, adaptador HDMI, datos del celular",
+                "Quién controla el computador mientras otro habla", "Qué esfera se recorta si vamos tarde"],
+      arranque: "", relevo: "", contenido: "", preguntas: [], media: {} },
+  ],
+
+  // Pautas investigadas (punto 1). Cada una es un grupo plegable en la Guía.
+  guia: [
+    { titulo: "Cómo los van a calificar", puntos: [
+      "El SENA evalúa con tres tipos de evidencia: de conocimiento (lo que saben), de desempeño (cómo lo muestran) y de producto (lo que construyeron). Normalmente usa una lista de chequeo.",
+      "En la exposición se ven las tres: las preguntas del jurado miden el conocimiento, la exposición mide el desempeño y la demo muestra el producto.",
+      "La formación por proyectos del SENA sigue cuatro fases: análisis, planeación, ejecución y evaluación. Cuenten los 2 años con esas mismas palabras: el jurado las reconoce.",
+      "Acción: pídanle al instructor la lista de chequeo o rúbrica real de la sustentación. Lo de arriba es el modelo general; la del instructor manda.",
+    ]},
+    { titulo: "La historia, no la lista de funciones", puntos: [
+      "El orden que funciona es: el porqué, el qué, el cómo y los resultados. Un proyecto se entiende por el problema que resuelve, no por sus botones.",
+      "Abran con la pregunta de origen y cierren volviendo a ella ya respondida. Esa vuelta es lo que deja la sensación de proyecto completo.",
+      "Cada esfera responde una sola pregunta. Si no saben cuál es la pregunta de su esfera, todavía no la entienden.",
+    ]},
+    { titulo: "Las diapositivas", puntos: [
+      "Una idea por diapositiva. El público tiene que entender solo con verla, sin leer párrafos.",
+      "Letra grande, frases cortas, y un diagrama o captura antes que texto: ver y oír a la vez se recuerda mejor.",
+      "Nada escrito para el expositor en la pantalla. Las notas van en el celular o en una tarjeta, nunca proyectadas.",
+      "Más o menos una diapositiva por esfera: unas 12 en total.",
+    ]},
+    { titulo: "La demo en vivo", puntos: [
+      "Guion fijo: siempre los mismos clics, en el mismo orden, con datos de prueba ya cargados.",
+      "Graben la demo en video antes del día y llévenla sin internet. Si algo falla, se dice \"les mostramos la grabación\" y se sigue sin drama.",
+      "Cierren chats, correo y notificaciones antes de proyectar. Compartan solo la ventana de la demo.",
+      "Ensayen el paso de las diapositivas a la demo y de vuelta: ahí es donde más se tropieza.",
+      "Mientras explican, quiten la mano del mouse. El cursor quieto ayuda a que miren lo que dicen.",
+    ]},
+    { titulo: "Relevos entre los cuatro", puntos: [
+      "Solo cuatro bloques, así que solo tres relevos. Pocos cambios se ven más profesionales.",
+      "Cada relevo tiene una frase puente ensayada: el que termina nombra lo que sigue y a quién le toca.",
+      "Nadie interrumpe al que está hablando. Si algo faltó, se agrega en las preguntas.",
+      "El que no habla mira al que habla, o maneja el computador. Nunca mira el celular.",
+    ]},
+    { titulo: "Voz, mirada y cuerpo", puntos: [
+      "Mirar al jurado, no a la pantalla. La pantalla es para el público, no para leer.",
+      "Hacer pausas después de cada idea importante. El silencio corto se ve seguro, no nervioso.",
+      "No memorizar texto palabra por palabra: se memoriza la estructura, la primera frase y la última de cada esfera.",
+      "Hablar a un ritmo que se entienda. Los nervios aceleran; ensayar con cronómetro lo corrige.",
+    ]},
+    { titulo: "El tiempo", puntos: [
+      "Quince minutos son unos 70 segundos por esfera. Ensayen con cronómetro hasta que salga solo.",
+      "Dejen un colchón de 45 segundos al final para imprevistos.",
+      "Acuerden una seña discreta para avisar que van tarde, y cuál esfera se acorta si pasa (la 5 y la 10 se pueden comprimir).",
+    ]},
+    { titulo: "Las preguntas del jurado", puntos: [
+      "Escuchen la pregunta completa, sin interrumpir. Si no es clara, pidan que la repitan.",
+      "Reformúlenla en una frase (\"nos preguntan si...\") y respondan en tres partes: la idea, el porqué y un ejemplo del proyecto.",
+      "Responde el dueño del bloque; los demás pueden complementar en una frase, no en un discurso.",
+      "Si no saben algo, se dice con honestidad y se propone cómo se resolvería. Eso puntúa mejor que inventar con seguridad.",
+      "Las preguntas típicas de software: por qué esas tecnologías, cómo se probó, cómo se protegen los datos, qué fue lo más difícil y qué le falta para usarse de verdad.",
+    ]},
+    { titulo: "Logística del día", puntos: [
+      "Llegar temprano y probar el proyector con su propio computador y su adaptador.",
+      "Llevar cargador, el video de la demo en USB y en el celular, y datos móviles por si el internet falla.",
+      "Dejar el proyecto abierto y listo antes de entrar, no arrancarlo en vivo.",
+      "Una hora antes no se estudia nada nuevo: solo las primeras frases y los relevos.",
+    ]},
+  ],
+
+  // Métodos de estudio con evidencia (Dunlosky 2013; Weinstein, Madan y Sumeracki 2018).
+  metodos: [
+    { nombre: "Recordar sin mirar", fuerza: "alta",
+      que: "Cerrar el material y tratar de decir o escribir lo que uno sabe. Las tarjetas y los cuestionarios sirven para esto.",
+      porque: "Es de las técnicas con más evidencia. Releer y subrayar, en cambio, rinden poco." },
+    { nombre: "Repasar en sesiones separadas", fuerza: "alta",
+      que: "Volver al mismo tema varias veces con descansos en medio, no todo de una sola vez.",
+      porque: "Se recuerda más y por más tiempo que estudiando todo junto." },
+    { nombre: "Explicarlo como a un niño (Feynman)", fuerza: "media",
+      que: "Explicar la esfera en voz alta con palabras simples. Donde uno se traba, ahí está lo que no entiende.",
+      porque: "Combina recordar y autoexplicarse, dos técnicas con buena evidencia." },
+    { nombre: "Preguntarse cómo y por qué", fuerza: "media",
+      que: "Para cada dato, preguntarse por qué es así y cómo se conecta con lo demás.",
+      porque: "Conecta lo nuevo con lo que ya se sabe y lo vuelve más fácil de recordar." },
+    { nombre: "Mezclar temas", fuerza: "media",
+      que: "Estudiar alternando esferas de distintos bloques en vez de una sola mucho rato.",
+      porque: "Cuesta más, pero ayuda a ver en qué se parecen y se diferencian las partes." },
+    { nombre: "Palabra más imagen", fuerza: "media",
+      que: "Acompañar cada idea con un dibujo o diagrama: la arquitectura se aprende dibujándola.",
+      porque: "Dos caminos hacia el mismo recuerdo lo vuelven más firme." },
+    { nombre: "Enseñarse entre ustedes", fuerza: "media",
+      que: "Cada uno domina su bloque y se lo enseña a los otros tres, como piezas de un rompecabezas.",
+      porque: "Para enseñar hay que organizar lo aprendido, y quien escucha aprende de alguien de su nivel." },
+    { nombre: "Palacio de la memoria", fuerza: "media",
+      que: "Asociar cada esfera a un lugar del colegio, en el orden en que se recorre. Para recordar el orden, se recorre mentalmente.",
+      porque: "Es una técnica antigua y probada para recordar listas en orden." },
+    { nombre: "Dormir", fuerza: "alta",
+      que: "Dormir bien la noche antes. Un repaso corto de tarjetas antes de dormir y otro al levantarse.",
+      porque: "El sueño ayuda a fijar lo estudiado. Trasnochar el día antes rinde menos de lo que parece." },
+  ],
+
+  // Plan de 24 horas. Se arranca cuando el tablero tenga las esferas llenas.
+  plan: [
+    { cuando: "Hora 0 a 1", quien: "Los cuatro juntos",
+      que: "Recorrer el mapa completo del tablero y escuchar el audio general del proyecto.",
+      meta: "Que cualquiera pueda explicar el proyecto entero en un minuto." },
+    { cuando: "Hora 1 a 4", quien: "Cada uno solo",
+      que: "Profundizar su bloque: video, audio y tarjetas de sus 3 esferas. Explicar cada una en voz alta sin mirar.",
+      meta: "Dominar su bloque y sus preguntas del jurado." },
+    { cuando: "Hora 4 a 5", quien: "Los cuatro juntos",
+      que: "Rompecabezas: cada uno enseña su bloque a los demás en 10 minutos.",
+      meta: "Que todos entiendan los cuatro bloques, no solo el propio." },
+    { cuando: "Hora 5 a 6", quien: "Cada uno solo",
+      que: "Cuestionario de NotebookLM sobre los bloques de los otros, mezclados.",
+      meta: "Detectar lo que todavía no está claro." },
+    { cuando: "Hora 6 a 7", quien: "Los cuatro juntos",
+      que: "Primer ensayo completo con cronómetro, demo incluida.",
+      meta: "Que salga en 15 minutos y los relevos queden firmes." },
+    { cuando: "Noche", quien: "Cada uno",
+      que: "Diez minutos de tarjetas del banco de preguntas y a dormir.",
+      meta: "Dejar que el sueño fije lo estudiado." },
+    { cuando: "Mañana, temprano", quien: "Cada uno",
+      que: "Tarjetas otra vez, sin mirar las respuestas primero.",
+      meta: "Repaso separado: lo que se recuerda hoy se queda." },
+    { cuando: "Mañana, antes de exponer", quien: "Los cuatro juntos",
+      que: "Ensayos dos y tres. En el tercero, los otros hacen preguntas sorpresa como si fueran el jurado.",
+      meta: "Responder tranquilos lo que sea." },
+    { cuando: "Una hora antes", quien: "Los cuatro",
+      que: "Solo las primeras frases, los relevos y la revisión del equipo. Nada nuevo.",
+      meta: "Llegar con la cabeza despejada." },
+  ],
+
+  notebooklm: {
+    pasos: [
+      "Crear un solo cuaderno llamado \"Proyecto de grado SENA\".",
+      "Subir como fuentes las fichas que se descargan de este tablero, más los documentos del proyecto: el documento escrito, el README, capturas y resúmenes del código.",
+      "En el panel Studio, generar primero el resumen en audio y el mapa mental del proyecto completo.",
+      "Para cada esfera, generar su video, su audio, sus tarjetas y su cuestionario con el prompt de la esfera (botón \"Copiar prompt\" dentro de cada esfera).",
+      "Descargar cada video y subirlo a YouTube como \"No listado\" o a Google Drive con \"Cualquier persona con el enlace\". Ese enlace se pone en la esfera del tablero.",
+    ],
+    avisos: [
+      "Acepta Markdown, PDF, Word, TXT, Google Docs, páginas web y videos de YouTube con subtítulos.",
+      "Los límites de fuentes y de videos por día cambian según el plan, y las guías no coinciden. Si se acaban los videos del día, sigan con audio y tarjetas.",
+      "Los videos más elaborados parecen ser solo para planes pagos (fuente única, sin confirmar).",
+      "Una guía dice que Google le cambió el nombre a Gemini Notebook en julio de 2026. Solo lo dice una fuente, sin confirmar; los cuadernos siguen funcionando igual.",
+    ],
+  },
+
+  fuentes: [
+    { nombre: "Weinstein, Madan y Sumeracki (2018), seis estrategias de aprendizaje", url: "https://cognitiveresearchjournal.springeropen.com/articles/10.1186/s41235-017-0087-y" },
+    { nombre: "Six Strategies for Effective Learning (Penn State)", url: "https://www.schreyerinstitute.psu.edu/pdf/SixStrategiesEffectiveLearning.YanaWeinstein.2017.pdf" },
+    { nombre: "Formación por proyectos en el SENA (Boletín Técnico SENAC)", url: "https://www.bts.senac.br/bts/article/download/717/594" },
+    { nombre: "Protocolo de sustentación de trabajo de grado (UAO)", url: "https://sitios.uao.edu.co/gradoing/wp-content/uploads/sites/61/2018/10/PROTOCOLO-SUSTENTACIÓN-DE-TRABAJO-DE-GRADO.pdf" },
+    { nombre: "Cómo responder preguntas difíciles del tribunal (Tesify)", url: "https://tesify.es/como-responder-preguntas-dificiles-tribunal-defensa-tesis-2026" },
+    { nombre: "Software demo tips for developers (DEV)", url: "https://dev.to/lukencode/software-demo-tips-for-developers-53pb" },
+    { nombre: "Demos, Software Engineering Workbook (UNT)", url: "https://openbooks.library.unt.edu/seworkbook/chapter/chapter-11-demos" },
+    { nombre: "Presentation tips learned from my mistakes (Haacked)", url: "https://haacked.com/archive/2011/04/18/presentation-tips.aspx/" },
+    { nombre: "Tipos de fuente que acepta NotebookLM (2026)", url: "https://horadecodar.com.br/tipos-fonte-notebooklm/" },
+  ],
+};
