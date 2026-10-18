@@ -433,3 +433,22 @@ pre.prompt {
 .chip:hover { background: var(--superficie); }
 @media (max-width: 900px) { .conceptos { grid-template-columns: repeat(2, 1fr); } .concepto-ficha { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .conceptos { grid-template-columns: 1fr 1fr; gap: 10px; } .concepto-txt { padding: 10px 12px 12px; } .concepto-txt small { display: none; } .tabs a { font-size: 10.5px; } }
+
+/* Instrucciones de Studio */
+.studio { list-style: none; margin: 20px 0 0; padding: 0; border-top: 1px solid var(--borde); }
+.studio li { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--borde); }
+.studio strong { color: var(--texto-fuerte); }
+.studio p { color: var(--texto-2); font-size: 15px; margin-top: 4px; max-width: 62ch; }
+.studio .btn { flex: none; }
+
+/* Lo esencial primero; lo largo plegado */
+.esencial { border-color: color-mix(in srgb, var(--azul-tx) 30%, var(--borde)); }
+.puntos { margin: 0; padding: 0; list-style: none; counter-reset: punto; }
+.puntos li { counter-increment: punto; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--borde); font-size: 16px; line-height: 1.45; color: var(--texto-fuerte); }
+.puntos li:first-child { border-top: 0; padding-top: 2px; }
+.puntos li::before { content: counter(punto); font-family: var(--mono); font-size: 13px; width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; background: var(--azul-bg); color: var(--azul-tx); margin-top: 1px; }
+.plegable summary { cursor: pointer; font-weight: 600; font-size: 16px; color: var(--texto-fuerte); list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 28px; }
+.plegable summary::-webkit-details-marker { display: none; }
+.plegable summary::after { content: "+"; font-family: var(--mono); color: var(--texto-2); font-size: 20px; }
+.plegable[open] summary::after { content: "−"; }
+.plegable[open] summary { margin-bottom: 12px; }

@@ -263,17 +263,28 @@ window.TABLERO = {
 
   notebooklm: {
     pasos: [
-      "Crear un solo cuaderno llamado \"Proyecto de grado SENA\".",
-      "Subir como fuentes las fichas que se descargan de este tablero, más los documentos del proyecto: el documento escrito, el README, capturas y resúmenes del código.",
-      "En el panel Studio, generar primero el resumen en audio y el mapa mental del proyecto completo.",
-      "Para cada esfera, generar su video, su audio, sus tarjetas y su cuestionario con el prompt de la esfera (botón \"Copiar prompt\" dentro de cada esfera).",
-      "Descargar cada video y subirlo a YouTube como \"No listado\" o a Google Drive con \"Cualquier persona con el enlace\". Ese enlace se pone en la esfera del tablero.",
+      "Un cuaderno por bloque, para no llenar el límite: ClassHub 1 · El porqué, 2 · El qué, 3 · El cómo, 4 · El proceso, 5 · Bastidores y 6 · Conceptos.",
+      "Descargar arriba el archivo del bloque y subirlo en Agregar fuente → Subir archivo. Si no deja, abrirlo, copiar todo y usar Agregar fuente → Texto copiado.",
+      "En el cuaderno de Conceptos se pueden agregar además 3 o 4 videos de YouTube como fuente (Agregar fuente → YouTube), con los enlaces de la pestaña Conceptos.",
+      "En el panel Studio, generar los materiales en el orden de la tabla de abajo. En cada uno, tocar el lápiz (personalizar) y pegar su instrucción.",
+      "Descargar cada video (⋮ → Descargar) y subirlo a YouTube como \"No listado\" o a Drive con \"Cualquier persona con el enlace\". Ese enlace se pone en la esfera del tablero.",
+      "Terminar un cuaderno antes de pasar al siguiente.",
     ],
     avisos: [
       "Acepta Markdown, PDF, Word, TXT, Google Docs, páginas web y videos de YouTube con subtítulos.",
-      "Los límites de fuentes y de videos por día cambian según el plan, y las guías no coinciden. Si se acaban los videos del día, sigan con audio y tarjetas.",
-      "Los videos más elaborados parecen ser solo para planes pagos (fuente única, sin confirmar).",
-      "Una guía dice que Google le cambió el nombre a Gemini Notebook en julio de 2026. Solo lo dice una fuente, sin confirmar; los cuadernos siguen funcionando igual.",
+      "Videos y audios tienen un límite diario. Si aparece el aviso, terminen con lo que no gasta cupo (mapa mental, tarjetas, cuestionario y tabla) y dejen los videos para el día siguiente.",
+      "En el computador de Jerónimo la app instalada ya se llama Gemini Notebook: es la misma NotebookLM con otro nombre.",
+    ],
+    studio: [
+      { boton: "Resumen de audio", instruccion: "Explícalo como dos estudiantes de grado 11 que preparan la sustentación ante el SENA. Usa ejemplos concretos de ClassHub y termina repasando las preguntas probables del jurado." },
+      { boton: "Resumen de vídeo", instruccion: "Video corto para estudiantes que van a exponer este bloque. Muestra el porqué, el qué y el cómo con diagramas simples. Nada que no esté en la fuente." },
+      { boton: "Mapa mental", instruccion: "" },
+      { boton: "Tarjetas didácticas", instruccion: "Una tarjeta por dato clave: pregunta corta al frente y respuesta de una o dos frases atrás. Incluye cifras reales y nombres técnicos." },
+      { boton: "Cuestionario", instruccion: "Preguntas tipo jurado del SENA, de opción múltiple, con la explicación de cada respuesta." },
+      { boton: "Informes", instruccion: "Guía de estudio de una página para exponer este bloque en 3 minutos: idea central, puntos clave y frase de relevo." },
+      { boton: "Infografía", instruccion: "Infografía del bloque para el celular, con la idea central y 4 o 5 datos." },
+      { boton: "Presentación", instruccion: "Una diapositiva por esfera, con una sola idea por diapositiva y letra grande." },
+      { boton: "Tabla de datos", instruccion: "Tabla con cada concepto técnico: qué es, cómo lo usa ClassHub y la pregunta probable del jurado." },
     ],
   },
 

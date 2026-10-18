@@ -34,7 +34,9 @@
   function fichaMarkdown(e) {
     const b = bloque(e.bloque);
     const l = [`# Esfera ${e.n}: ${e.titulo}`, '', `Proyecto: ${nombreProyecto()}. Bloque: ${b.nombre} (${b.idea}).`, '',
-      `## La pregunta que responde`, e.pregunta, '', `## Qué debe incluir`, ...e.incluye.map(x => `- ${x}`), ''];
+      `## La pregunta que responde`, e.pregunta, ''];
+    if (e.esencial) l.push(`## Lo esencial`, ...e.esencial.map(x => `- ${x}`), '');
+    l.push(`## Qué debe incluir`, ...e.incluye.map(x => `- ${x}`), '');
     if (e.contenido) l.push(`## Contenido`, e.contenido, '');
     if (e.arranque) l.push(`## Frase de arranque`, e.arranque, '');
     if (e.relevo) l.push(`## Frase de relevo`, e.relevo, '');
@@ -80,6 +82,8 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   const CONC = D.conceptos || [];
   const concepto = id => CONC.find(c => c.id === id);
   const urlVideo = v => `https://www.youtube.com/watch?v=${v.id}`;
+  // Parte un párrafo en frases para mostrarlo como puntos cortos.
+  const frasesDe = t => t.split(/(?<=[.:])\s+(?=[A-ZÁÉÍÓÚÑ0-9"(])/).map(x => x.trim()).filter(Boolean);
 
   function conceptoMarkdown(c) {
     const l = [`## ${c.nombre}`, '', `Qué es: ${c.que}`, '', `Analogía: ${c.analogia}`, '', `Cómo lo usa ${nombreProyecto()}: ${c.enClassHub}`, '',
@@ -133,7 +137,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       <div class="concepto-ficha">
         <div>
           <div class="panel entra" style="--i:1"><h3>Para entenderlo fácil</h3><p class="frase">${esc(c.analogia)}</p></div>
-          <div class="panel entra" style="--i:2"><h3>Cómo lo usa ${esc(nombreProyecto())}</h3><p>${esc(c.enClassHub)}</p></div>
+          <div class="panel entra esencial" style="--i:2"><h3>Cómo lo usa ${esc(nombreProyecto())}</h3><ol class="puntos">${frasesDe(c.enClassHub).map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>
           <div class="panel entra" style="--i:3"><h3>Pregunta probable del jurado</h3>
             <div class="acordeon"><details open><summary>${esc(c.pregunta.p)}</summary><ul><li>${esc(c.pregunta.r)}</li></ul></details></div></div>
         </div>
@@ -146,6 +150,11 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
         ${ant ? `<a href="#/concepto/${ant.id}"><small><i class="ph-bold ph-arrow-left"></i> Anterior</small><span>${esc(ant.nombre)}</span></a>` : '<span></span>'}
         ${sig ? `<a class="sig" href="#/concepto/${sig.id}"><small>Siguiente <i class="ph-bold ph-arrow-right"></i></small><span>${esc(sig.nombre)}</span></a>` : `<a class="sig" href="#/conceptos"><small>Terminaste</small><span>Volver a conceptos</span></a>`}
       </nav>`;
+  }
+
+  async function copiarTexto(texto) {
+    try { await navigator.clipboard.writeText(texto); avisar('Instrucción copiada'); }
+    catch { avisar('No se pudo copiar. Selecciónalo a mano.'); }
   }
 
   async function copiar(texto) {
@@ -372,19 +381,19 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
           ${etiquetaEstado(e)}
         </div>
       </div>
-      <div class="panel"><h3>Qué tiene que quedar claro</h3><ul class="lista">${e.incluye.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
-      <div class="panel"><h3>El contenido</h3>${contenido}</div>
+      ${e.esencial ? `<div class="panel esencial"><h3>Lo esencial</h3><ol class="puntos">${e.esencial.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
       ${frases}
+      <div class="panel"><h3>Preguntas del jurado</h3>${preguntas}</div>
       ${(D.conceptosPorEsfera?.[e.n] || []).length ? `<div class="panel"><h3>Conceptos para repasar</h3><div class="chips">${D.conceptosPorEsfera[e.n].map(id => concepto(id)).filter(Boolean).map(c => `<a class="chip" href="#/concepto/${c.id}"><i class="ph-bold ${c.video ? 'ph-play-circle' : 'ph-book-open-text'}"></i>${esc(c.nombre)}</a>`).join('')}</div></div>` : ''}
-      <div class="panel"><h3>Material de estudio</h3>${medios(e)}</div>
-      <div class="panel"><h3>Preguntas probables del jurado</h3>${preguntas}</div>
-      <div class="panel"><h3>Para NotebookLM</h3>
-        <pre class="prompt">${esc(prompt(e))}</pre>
+      <details class="panel plegable"><summary>Explicación completa</summary>${contenido}</details>
+      <details class="panel plegable"><summary>Material de estudio y NotebookLM</summary>
+        ${medios(e)}
+        <pre class="prompt" style="margin-top:14px">${esc(prompt(e))}</pre>
         <div class="fila-btn">
           <button class="btn btn-2 btn-chico" data-copiar>Copiar prompt</button>
           <button class="btn btn-2 btn-chico" data-ficha>Descargar ficha</button>
         </div>
-      </div>
+      </details>
       <label class="check panel"><input type="checkbox" data-estudiada ${estudiada ? 'checked' : ''}> Ya la estudié y la puedo explicar sin mirar</label>
       <nav class="nav-esferas" aria-label="Secuencia">
         ${ant ? `<a href="#/esfera/${ant.n}"><small><i class="ph-bold ph-arrow-left"></i> Anterior</small><span>${esc(ant.titulo)}</span></a>` : '<span></span>'}
@@ -541,14 +550,35 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       <section class="seccion"><h2>El plan, hora por hora</h2><p>Arranca cuando las esferas tengan su contenido.</p><ul class="plan">${plan}</ul></section>`;
   }
 
+  // Una fuente por bloque: sus esferas y los conceptos que esas esferas deben repasar.
+  function bloqueMarkdown(id) {
+    const b = bloque(id), p = D.proyecto;
+    const es = D.esferas.filter(e => e.bloque === id);
+    const ids = [...new Set(es.flatMap(e => D.conceptosPorEsfera?.[e.n] || []))];
+    const l = [`# ${nombreProyecto()}, ${b.nombre} (${b.idea})`, '', p.frase || '', p.preguntaOrigen ? `Pregunta de origen: ${p.preguntaOrigen}` : '',
+      `Equipo: ${D.equipo.join(', ')}. ${p.programa}. Exposición de 15 minutos.`, ''];
+    es.forEach(e => l.push(fichaMarkdown(e), ''));
+    if (ids.length) { l.push(`# Conceptos clave de este bloque`, ''); ids.map(concepto).filter(Boolean).forEach(c => l.push(conceptoMarkdown(c), '')); }
+    return l.join('\n');
+  }
+
   function vistaNotebook() {
     const N = D.notebooklm;
+    const botones = D.bloques.map((b, i) => `<button class="btn btn-2 btn-chico" data-bloque="${b.id}"><i class="ph-bold ph-download-simple"></i>${i + 1} · ${esc(b.nombre)}</button>`).join('')
+      + `<button class="btn btn-2 btn-chico" data-conceptos><i class="ph-bold ph-download-simple"></i>6 · Conceptos</button>`;
+    const studio = (N.studio || []).map((x, i) => `<li><div><strong>${esc(x.boton)}</strong>${x.instruccion ? `<p>${esc(x.instruccion)}</p>` : '<p>No necesita instrucción.</p>'}</div>
+      ${x.instruccion ? `<button class="btn btn-2 btn-chico" data-copiar-studio="${i}">Copiar</button>` : ''}</li>`).join('');
     return `
       <section class="entra"><h1>Cómo usar NotebookLM con este tablero</h1>
-        <p class="bajada">Cada esfera se vuelve un paquete de estudio: video, audio, tarjetas y cuestionario.</p>
-        <div class="acciones"><button class="btn btn-1" data-todo>Descargar todas las fichas <i class="ph-bold ph-download-simple"></i></button></div></section>
+        <p class="bajada">Un cuaderno por bloque. Cada uno se vuelve un paquete de estudio: audio, video, tarjetas, cuestionario y más.</p></section>
+      <section class="seccion"><h2>Las fuentes, una por cuaderno</h2>
+        <p>Toca el bloque que te toca y súbelo como fuente. Funciona también desde el celular.</p>
+        <div class="fila-btn">${botones}</div></section>
       <section class="seccion"><h2>Paso a paso</h2>
-        <ol class="numerada">${N.pasos.map(p => `<li><span>${esc(p)}</span></li>`).join('')}</ol>
+        <ol class="numerada">${N.pasos.map(p => `<li><span>${esc(p)}</span></li>`).join('')}</ol></section>
+      <section class="seccion"><h2>Qué generar en Studio</h2>
+        <p>En este orden. Toca el lápiz de cada botón y pega su instrucción.</p>
+        <ul class="studio">${studio}</ul>
         <div class="aviso"><strong>Lo que hay que saber</strong><ul>${N.avisos.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div></section>`;
   }
 
@@ -600,6 +630,10 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     if (ev.target.closest('[data-centrar]')) centrar();
     if (ev.target.closest('[data-todo]')) descargar(`${nombreProyecto()} - todas las esferas.md`, todoMarkdown());
     if (ev.target.closest('[data-conceptos]')) descargar(`${nombreProyecto()} - conceptos clave.md`, conceptosMarkdown());
+    const bq = ev.target.closest('[data-bloque]');
+    if (bq) { const i = D.bloques.findIndex(b => b.id === bq.dataset.bloque); descargar(`${nombreProyecto()} ${i + 1} - ${D.bloques[i].nombre}.md`, bloqueMarkdown(bq.dataset.bloque)); }
+    const cs = ev.target.closest('[data-copiar-studio]');
+    if (cs) copiarTexto(D.notebooklm.studio[Number(cs.dataset.copiarStudio)].instruccion);
   });
 
   window.addEventListener('hashchange', render);
