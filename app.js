@@ -423,6 +423,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       ${frases}
       <div class="panel"><h3>Preguntas del jurado</h3>${preguntas}</div>
       ${(D.conceptosPorEsfera?.[e.n] || []).length ? `<div class="panel"><h3>Conceptos para repasar</h3><div class="chips">${D.conceptosPorEsfera[e.n].map(id => concepto(id)).filter(Boolean).map(c => `<a class="chip" href="#/concepto/${c.id}"><i class="ph-bold ${c.video ? 'ph-play-circle' : 'ph-book-open-text'}"></i>${esc(c.nombre)}</a>`).join('')}</div></div>` : ''}
+      ${(e.n === 1 || e.n === 12) ? `<a class="btn btn-1" href="#/lider" style="margin-top:14px"><i class="ph-bold ph-crown"></i>Guion completo en la guía del líder</a>` : ''}
       ${e.n === 15 ? `<a class="btn btn-1" href="#/codigo" style="margin-top:14px"><i class="ph-bold ph-folder-open"></i>Abrir el mapa del código</a>` : ''}
       <details class="panel plegable"><summary>Explicación completa</summary>${contenido}</details>
       <details class="panel plegable"><summary>Material de estudio y NotebookLM</summary>
@@ -638,11 +639,49 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     P.actual = P.cola.shift() || null; P.visible = false; pintarPractica();
   }
 
+  // ---------- Guía del líder ----------
+  function liderMarkdown() {
+    const L = D.lider; if (!L) return '';
+    const l = [`# ${nombreProyecto()}: guía del líder (${L.nombre})`, ''];
+    L.versiones.forEach(v => l.push(`## El proyecto ${v.titulo.toLowerCase()}`, v.texto, ''));
+    l.push('## Mi papel como líder', ...L.rol.map(x => `- ${x}`), '');
+    l.push('## Apertura', L.apertura, '', '## Cierre', L.cierre, '');
+    l.push('## Las decisiones que tomé y por qué', ...L.decisiones.map(x => `- ${x.d}: ${x.por}`), '');
+    l.push('## Los números que debo saber', ...L.numeros.map(([n, q]) => `- ${n}: ${q}`), '');
+    l.push('## Quién responde cada pregunta', ...L.reparto.map(([q, w]) => `- ${q} → ${w}`), '');
+    l.push('## Frases útiles', ...L.frases.map(([c, f]) => `- ${c}: ${f}`), '');
+    l.push('## Plan de estudio de esta noche', ...L.noche.map(([c, q]) => `- ${c}: ${q}`));
+    return l.join('\n');
+  }
+
+  function vistaLider() {
+    const L = D.lider;
+    if (!L) return '<section><h1>Guía del líder</h1></section>';
+    const filas = arr => `<ul class="tabla-codigo">${arr.map(([a, b]) => `<li><strong>${esc(a)}</strong><span>${esc(b)}</span></li>`).join('')}</ul>`;
+    return `
+      <section class="entra"><h1>Guía del líder</h1>
+        <p class="bajada">${esc(L.nombre)}: cómo explicar ${esc(nombreProyecto())} como creador y cómo guiar al equipo en la exposición.</p>
+        <div class="acciones"><button class="btn btn-2" data-lider>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button></div></section>
+      <section class="seccion"><h2>El proyecto en tres tamaños</h2><p>Practica las tres en voz alta. La de 2 minutos es la base de todo.</p>
+        <div class="acordeon">${L.versiones.map((v, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(v.titulo)}</summary><div class="contenido lider-texto">${parrafos(v.texto)}</div></details>`).join('')}</div></section>
+      <section class="seccion"><h2>Tu papel</h2>
+        <div class="panel esencial" style="margin-top:16px"><ol class="puntos">${L.rol.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div></section>
+      <section class="seccion"><h2>Apertura y cierre</h2><p>La primera y la última frase, palabra por palabra; lo del medio, con tus palabras.</p>
+        <div class="panel" style="margin-top:16px"><p class="frase-lbl">Apertura</p><div class="contenido lider-texto">${parrafos(L.apertura)}</div></div>
+        <div class="panel"><p class="frase-lbl">Cierre</p><div class="contenido lider-texto">${parrafos(L.cierre)}</div></div></section>
+      <section class="seccion"><h2>Las decisiones que tomaste</h2><p>Como creador, el "¿por qué?" lo respondes tú.</p>
+        <div class="acordeon">${L.decisiones.map(x => `<details><summary>${esc(x.d)}</summary><ul><li>${esc(x.por)}</li></ul></details>`).join('')}</div></section>
+      <section class="seccion"><h2>Los números del líder</h2>${filas(L.numeros)}</section>
+      <section class="seccion"><h2>Quién responde cada pregunta</h2>${filas(L.reparto)}</section>
+      <section class="seccion"><h2>Frases que salvan</h2>${filas(L.frases)}</section>
+      <section class="seccion"><h2>Tu plan para esta noche</h2>${filas(L.noche)}</section>`;
+  }
+
   function vistaGuia() {
     return `
       <section class="entra"><h1>Cómo hacer una exposición excelente</h1>
         <p class="bajada">Lo que encontramos al investigar cómo se califica, cómo se cuenta un proyecto de software y cómo se responden las preguntas del jurado.</p>
-        <div class="acciones"><a class="btn btn-2" href="#/avance"><i class="ph-bold ph-flag-banner"></i>Avance y reparto de los 15 minutos</a></div></section>
+        <div class="acciones"><a class="btn btn-1" href="#/lider"><i class="ph-bold ph-crown"></i>Guía del líder</a><a class="btn btn-2" href="#/avance"><i class="ph-bold ph-flag-banner"></i>Avance y reparto de los 15 minutos</a></div></section>
       <div class="acordeon">${D.guia.map((g, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(g.titulo)}</summary><ul>${g.puntos.map(p => `<li>${esc(p)}</li>`).join('')}</ul></details>`).join('')}</div>
       <p class="fuentes-link"><a href="#/fuentes">Ver las fuentes de la investigación</a></p>`;
   }
@@ -674,7 +713,8 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     const N = D.notebooklm;
     const botones = D.bloques.map((b, i) => `<button class="btn btn-2 btn-chico" data-bloque="${b.id}"><i class="ph-bold ph-download-simple"></i>${i + 1} · ${esc(b.nombre)}</button>`).join('')
       + `<button class="btn btn-2 btn-chico" data-conceptos><i class="ph-bold ph-download-simple"></i>6 · Conceptos</button>`
-      + `<button class="btn btn-2 btn-chico" data-codigo><i class="ph-bold ph-download-simple"></i>7 · Mapa del código</button>`;
+      + `<button class="btn btn-2 btn-chico" data-codigo><i class="ph-bold ph-download-simple"></i>7 · Mapa del código</button>`
+      + `<button class="btn btn-2 btn-chico" data-lider><i class="ph-bold ph-download-simple"></i>8 · Guía del líder</button>`;
     const studio = (N.studio || []).map((x, i) => `<li><div><strong>${esc(x.boton)}</strong>${x.instruccion ? `<p>${esc(x.instruccion)}</p>` : '<p>No necesita instrucción.</p>'}</div>
       ${x.instruccion ? `<button class="btn btn-2 btn-chico" data-copiar-studio="${i}">Copiar</button>` : ''}</li>`).join('');
     return `
@@ -702,7 +742,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   function render() {
     const partes = location.hash.replace(/^#\/?/, '').split('/');
     const ruta = partes[0] || 'mapa';
-    const activa = ruta === 'esfera' ? 'mapa' : (ruta === 'concepto' || ruta === 'codigo') ? 'conceptos' : ruta === 'avance' ? 'guia' : ruta;
+    const activa = ruta === 'esfera' ? 'mapa' : (ruta === 'concepto' || ruta === 'codigo') ? 'conceptos' : (ruta === 'avance' || ruta === 'lider') ? 'guia' : ruta;
     document.querySelectorAll('.tabs a').forEach(a => {
       if (a.dataset.ruta === activa) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
@@ -721,7 +761,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     document.body.classList.remove('en-mapa');
     app.dataset.vista = ruta;
     const vistas = { avance: vistaAvance, guia: vistaGuia, estudio: vistaEstudio, notebooklm: vistaNotebook, fuentes: vistaFuentes,
-      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]), codigo: vistaCodigo, practicar: vistaPracticar };
+      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]), codigo: vistaCodigo, practicar: vistaPracticar, lider: vistaLider };
     app.innerHTML = (vistas[ruta] ||(() => `<section><h1>Esta página no existe</h1><div class="acciones"><a class="btn btn-1" href="#/mapa">Ir al mapa</a></div></section>`))();
     const h1 = app.querySelector('h1');
     document.title = `${h1 ? h1.textContent : 'Tablero'} · ${nombreProyecto()}`;
@@ -743,6 +783,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     if (ev.target.closest('[data-p-repasar]')) marcar('repasar');
     const pf = ev.target.closest('[data-p-filtro]');
     if (pf) { P.filtro = pf.dataset.pFiltro; document.querySelectorAll('[data-p-filtro]').forEach(b => b.classList.toggle('chip-activo', b.dataset.pFiltro === P.filtro)); armarCola(); pintarPractica(); }
+    if (ev.target.closest('[data-lider]')) descargar(`${nombreProyecto()} 8 - Guia del lider.md`, liderMarkdown());
     if (ev.target.closest('[data-codigo]')) descargar(`${nombreProyecto()} 7 - Mapa del codigo.md`, codigoMarkdown());
     if (ev.target.closest('[data-conceptos]')) descargar(`${nombreProyecto()} - conceptos clave.md`, conceptosMarkdown());
     const bq = ev.target.closest('[data-bloque]');
