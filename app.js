@@ -419,6 +419,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
         </div>
       </div>
       ${e.esencial ? `<div class="panel esencial"><h3>Lo esencial</h3><ol class="puntos">${e.esencial.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
+      ${e.diagrama ? `<div class="panel diagrama"><h3>${esc(e.diagrama.titulo)}</h3>${e.diagrama.svg}<p class="frase-lbl" style="margin-top:10px">${esc(e.diagrama.nota)}</p></div>` : ''}
       ${frases}
       <div class="panel"><h3>Preguntas del jurado</h3>${preguntas}</div>
       ${(D.conceptosPorEsfera?.[e.n] || []).length ? `<div class="panel"><h3>Conceptos para repasar</h3><div class="chips">${D.conceptosPorEsfera[e.n].map(id => concepto(id)).filter(Boolean).map(c => `<a class="chip" href="#/concepto/${c.id}"><i class="ph-bold ${c.video ? 'ph-play-circle' : 'ph-book-open-text'}"></i>${esc(c.nombre)}</a>`).join('')}</div></div>` : ''}
