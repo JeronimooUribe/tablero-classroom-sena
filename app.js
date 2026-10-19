@@ -115,7 +115,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     l.push('', '## Funciones clave', ...C.funciones.map(([f, d, q]) => `- ${f} (${d}): ${q}`));
     C.recorridos.forEach(r => l.push('', `## Recorrido: ${r.titulo}`, ...r.pasos.map((x, i) => `${i + 1}. ${x}`)));
     l.push('', '## Simulacro "abra y busque"', ...C.simulacro.map(([q, a]) => `- ${q} → ${a}`));
-    l.push('', '## Atajos de VS Code', ...C.atajos.map(([k, v]) => `- ${k}: ${v}`));
+    l.push('', '## Atajos de Antigravity', ...C.atajos.map(([k, v]) => `- ${k}: ${v}`));
     return l.join('\n');
   }
 
@@ -136,9 +136,9 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
         <ul class="tabla-codigo funciones">${C.funciones.map(([f, d, q]) => `<li><code>${esc(f)}</code><span><strong class="mono">${esc(d)}</strong><br>${esc(q)}</span></li>`).join('')}</ul></section>
       <section class="seccion"><h2>Recorridos</h2><p>Cómo viaja cada acción, del botón a la base de datos.</p>
         <div class="acordeon">${C.recorridos.map((r, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(r.titulo)}</summary><ol class="pasos-codigo">${r.pasos.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>`).join('')}</div></section>
-      <section class="seccion"><h2>Simulacro: abra y busque</h2><p>Lean la pregunta, búsquenla en VS Code y luego toquen para ver la respuesta.</p>
+      <section class="seccion"><h2>Simulacro: abra y busque</h2><p>Lean la pregunta, búsquenla en Antigravity y luego toquen para ver la respuesta.</p>
         <div class="acordeon">${C.simulacro.map(([q, a]) => `<details><summary>${esc(q)}</summary><ul><li><code>${esc(a)}</code></li></ul></details>`).join('')}</div></section>
-      <section class="seccion"><h2>Atajos de VS Code</h2>
+      <section class="seccion"><h2>Atajos de Antigravity</h2>
         <ul class="tabla-codigo">${C.atajos.map(([k, v]) => fila(k, v)).join('')}</ul></section>`;
   }
 

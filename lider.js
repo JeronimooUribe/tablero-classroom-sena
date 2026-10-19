@@ -90,7 +90,7 @@ window.TABLERO.lider = {
   ],
 
   despliegue: [
-    'Se programa en VS Code y se guarda con Git (commit).',
+    'Se programa en el editor (Antigravity) y se guarda con Git (commit).',
     'Se sube a GitHub (git push).',
     'GitHub Actions corre la CI: lint, tipos, 140 pruebas, compilación, auditoría.',
     'Al llegar a la rama main, Railway lee el Dockerfile y construye la imagen (Node 20).',

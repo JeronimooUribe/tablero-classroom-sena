@@ -393,7 +393,7 @@ Cómo se abre:
 
 Si no arranca: Docker debe decir "running". Si sale un error, se cierra con APAGAR OFFLINE.bat y se vuelve a intentar. Si no, se usa la versión online.`,
     preguntas: [
-      { p: 'Muéstrenos el código de una parte.', r: 'Buenas opciones: middleware.ts (cómo se protegen las rutas), app/api/tasks/[id]/status/route.ts (cambiar estado y sumar puntos) o lib/ranks.ts (los 6 rangos). Ábranlo en VS Code dentro de ClassHub - Codigo.' },
+      { p: 'Muéstrenos el código de una parte.', r: 'Buenas opciones: middleware.ts (cómo se protegen las rutas), app/api/tasks/[id]/status/route.ts (cambiar estado y sumar puntos) o lib/ranks.ts (los 6 rangos). Ábranlo en Antigravity dentro de ClassHub - Codigo.' },
     ],
   });
 

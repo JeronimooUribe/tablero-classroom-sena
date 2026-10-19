@@ -2,7 +2,7 @@
 // Verificado contra el repositorio (archivos y líneas) el 2026-10-18.
 
 window.TABLERO.codigo = {
-  carpeta: 'Proyecto_tareas\\ClassHub - Codigo (abrir en VS Code). Los números de línea son de la versión con notas de exposición (rama guia-exposicion).',
+  carpeta: 'Proyecto_tareas\\ClassHub - Codigo (abrir en Antigravity). Los números de línea son de la versión con notas de exposición (rama guia-exposicion).',
 
   preguntas: [
     { p: '¿Se VE o pasa en el SERVIDOR?',
