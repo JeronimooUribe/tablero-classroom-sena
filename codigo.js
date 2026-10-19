@@ -1,0 +1,117 @@
+// Mapa del código de ClassHub: cómo encontrar cualquier archivo o función.
+// Verificado contra el repositorio (archivos y líneas) el 2026-10-18.
+
+window.TABLERO.codigo = {
+  carpeta: 'Proyecto_tareas\\ClassHub - Codigo (abrir en VS Code: Archivo → Abrir carpeta)',
+
+  preguntas: [
+    { p: '¿Se VE o pasa en el SERVIDOR?',
+      r: 'Pantalla completa → app/(app) o app/(auth). Pieza que se repite → components/. Servidor → app/api/. Lógica compartida → lib/. Portero → middleware.ts.' },
+    { p: '¿Cuál es la DIRECCIÓN?',
+      r: 'La dirección es la carpeta: /dashboard vive en app/(app)/dashboard/page.tsx. page.tsx es pantalla y route.ts es API. Los paréntesis no salen en la dirección; [id] es un valor variable.' },
+    { p: '¿Qué VERBO es?',
+      r: 'En un route.ts, cada función se llama como el verbo: GET lee, POST crea, PATCH o PUT cambia y DELETE borra.' },
+  ],
+
+  rutas: [
+    ['/dashboard', 'app/(app)/dashboard/page.tsx'],
+    ['/calendar', 'app/(app)/calendar/page.tsx'],
+    ['/announcements', 'app/(app)/announcements/page.tsx'],
+    ['/moderator', 'app/(app)/moderator/page.tsx'],
+    ['/admin', 'app/(app)/admin/page.tsx'],
+    ['/login', 'app/(auth)/login/page.tsx'],
+    ['/landing', 'app/landing/page.tsx'],
+    ['/api/auth/login', 'app/api/auth/login/route.ts'],
+    ['/api/tasks', 'app/api/tasks/route.ts'],
+    ['/api/tasks/{id}/status', 'app/api/tasks/[id]/status/route.ts'],
+    ['/api/v1/tasks', 'app/api/v1/tasks/route.ts → reexporta app/api/tasks/route.ts'],
+  ],
+
+  funciones: [
+    ['middleware', 'middleware.ts:30', 'El portero: revisa el token y el rol antes de cada página o API'],
+    ['POST (login)', 'app/api/auth/login/route.ts:22', 'Valida, revisa el límite de intentos y el pago, firma el JWT y pone las cookies'],
+    ['signToken', 'lib/auth.ts:8', 'Crea el JWT de 1 hora'],
+    ['requireSession / requireRole', 'lib/api-auth.ts:62 / 68', 'Segunda capa de permisos en cada API (401 y 403)'],
+    ['checkLoginRateLimit', 'lib/rate-limit.ts:29', '10 intentos fallidos en 15 minutos y luego bloqueo'],
+    ['GET (tareas)', 'app/api/tasks/route.ts:6', 'Lista las tareas del grupo'],
+    ['getTasksForGroup', 'lib/services/tasks.ts:45', 'SELECT de tasks + subjects + task_status del estudiante'],
+    ['POST (tareas)', 'app/api/tasks/route.ts:30', 'Crea una tarea (solo docente o admin)'],
+    ['createTask', 'lib/services/tasks.ts:78', 'Inserta la tarea, da +5 al docente y avisa por push'],
+    ['PATCH (estado)', 'app/api/tasks/[id]/status/route.ts:10', 'Guarda el estado en task_status y da +3 o +10 puntos'],
+    ['addPoints', 'lib/points.ts:14', 'Suma puntos y recalcula el rango'],
+    ['getRankFromPoints', 'lib/ranks.ts:18', 'Convierte puntos en uno de los 6 rangos'],
+    ['POST (IA)', 'app/api/ai/assist/route.ts:63', 'Texto del docente → Claude → JSON con los campos'],
+    ['POST (imágenes)', 'app/api/upload/route.ts:83', 'Sube a Cloudinary, máximo 5 MB'],
+    ['notifyNewTask', 'lib/push-server.ts:129', 'Notificación de tarea nueva al grupo'],
+    ['query / mutate', 'lib/db.ts:19 / 35', 'Consultas a MySQL, siempre con parámetros ?'],
+    ['parseDueAt', 'lib/dates.ts:18', 'Corrige la hora de Colombia (+5 horas)'],
+    ['TaskStatusSchema', 'lib/schemas.ts:62', 'Valida pendiente, en_proceso o completada'],
+  ],
+
+  recorridos: [
+    { titulo: 'Marcar una tarea como completada', pasos: [
+      'components/TaskStatusButton.tsx:26 → PATCH /api/v1/tasks/{id}/status',
+      'middleware.ts verifica el JWT',
+      'app/api/tasks/[id]/status/route.ts:10 → requireSession y TaskStatusSchema',
+      'INSERT … ON DUPLICATE KEY UPDATE en task_status',
+      'addPoints(+10) en lib/points.ts:14',
+    ]},
+    { titulo: 'Iniciar sesión', pasos: [
+      'app/(auth)/login/page.tsx:38 → POST /api/auth/login',
+      'LoginSchema → checkLoginRateLimit → buscar el usuario → comparar el código',
+      'checkPaymentAccess (estudiantes) → +2 puntos del día',
+      'signToken (JWT de 1 hora) + issueRefreshToken (30 días) → 2 cookies',
+    ]},
+    { titulo: 'Crear una tarea (docente)', pasos: [
+      'components/CreateTaskModal.tsx (formulario)',
+      'Opcional: AITaskAssistant.tsx:52 → /api/ai/assist → Claude llena los campos',
+      'Opcional: línea 186 → /api/upload → Cloudinary',
+      'Línea 249 → POST /api/v1/tasks → requireRole("moderator")',
+      'createTask (lib/services/tasks.ts:78) → INSERT en tasks, +5 puntos, notifyNewTask',
+    ]},
+    { titulo: 'Un estudiante escribe /admin', pasos: [
+      'middleware.ts lee el rol del JWT: student',
+      'Redirige a /dashboard',
+      'Si llama a /api/admin/… → 403 del middleware y también de requireRole("admin")',
+    ]},
+    { titulo: 'La sesión se renueva sola', pasos: [
+      'El JWT dura 1 hora',
+      'lib/session-context.tsx:77 → POST /api/auth/refresh',
+      'rotateRefreshToken (lib/tokens.ts:79): el token viejo se invalida y se emite uno nuevo',
+    ]},
+  ],
+
+  simulacro: [
+    ['¿Dónde se inicia sesión?', 'app/api/auth/login/route.ts, POST línea 22'],
+    ['¿Dónde se revisan los permisos de cada página?', 'middleware.ts, línea 30'],
+    ['¿Dónde se crea el token?', 'lib/auth.ts, signToken línea 8'],
+    ['¿Dónde se guarda que completé una tarea?', 'app/api/tasks/[id]/status/route.ts, PATCH línea 10 → tabla task_status'],
+    ['¿Dónde se suman los puntos?', 'lib/points.ts, addPoints línea 14'],
+    ['¿Dónde están los rangos?', 'lib/ranks.ts, lista RANKS'],
+    ['¿Dónde se crea una tarea?', 'app/api/tasks/route.ts POST línea 30 → lib/services/tasks.ts createTask línea 78'],
+    ['¿Dónde está el formulario de tarea?', 'components/CreateTaskModal.tsx'],
+    ['¿Dónde se conecta la IA?', 'app/api/ai/assist/route.ts: modelo en la línea 108, instrucciones SYSTEM en la línea 18'],
+    ['¿Dónde se conecta la base de datos?', 'lib/db.ts: createPool línea 5'],
+    ['¿Dónde están las tablas?', 'database/schema.sql y database/migrations/ (001 a 008)'],
+    ['¿Dónde se evita que adivinen códigos?', 'lib/rate-limit.ts: MAX_ATTEMPTS = 10, WINDOW_MINUTES = 15'],
+    ['¿Dónde se validan los datos?', 'lib/schemas.ts (Zod)'],
+    ['¿Dónde se suben imágenes?', 'app/api/upload/route.ts: POST línea 83, límite de 5 MB en la línea 9'],
+    ['¿Dónde se envían notificaciones?', 'lib/push-server.ts; el celular las recibe en public/sw.js'],
+    ['¿Qué la hace instalable?', 'public/manifest.json'],
+    ['¿Dónde está el panel de admin?', 'app/(app)/admin/page.tsx: pestañas cerca de la línea 345'],
+    ['¿Dónde se corrige la hora de Colombia?', 'lib/dates.ts, parseDueAt línea 18'],
+    ['¿Dónde están las pruebas?', '__tests__/ (npm test)'],
+    ['¿Dónde está la revisión automática?', '.github/workflows/ci.yml'],
+    ['¿Dónde está el respaldo diario?', '.github/workflows/db-backup.yml'],
+    ['¿Cómo se empaqueta para la nube?', 'Dockerfile (3 etapas, Node 20) + railway.toml'],
+    ['"Muéstrenos la contraseña de la base"', 'No está en el código, a propósito: vive en las variables de Railway. El código solo lee process.env.DB_PASSWORD'],
+  ],
+
+  atajos: [
+    ['Ctrl + P', 'Abrir un archivo por su nombre'],
+    ['Ctrl + Shift + F', 'Buscar una palabra en todo el proyecto'],
+    ['Ctrl + G', 'Ir a una línea'],
+    ['F12 o Ctrl + clic', 'Ir a donde está definida una función'],
+    ['Ctrl + Shift + O', 'Ver las funciones del archivo abierto'],
+  ],
+};

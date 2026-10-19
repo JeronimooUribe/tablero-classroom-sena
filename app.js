@@ -106,6 +106,42 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       <span class="mini-txt"><i class="ph-bold ph-play-circle"></i><span><strong>${esc(v.titulo)}</strong><small>${esc(v.canal)} · YouTube</small></span></span>
     </a>`;
 
+  // ---------- Mapa del código ----------
+  function codigoMarkdown() {
+    const C = D.codigo; if (!C) return '';
+    const l = [`# ${nombreProyecto()}: mapa del código`, '', `Carpeta: ${C.carpeta}`, '', '## Las 3 preguntas para encontrar cualquier cosa'];
+    C.preguntas.forEach((q, i) => l.push(`${i + 1}. ${q.p} ${q.r}`));
+    l.push('', '## Dirección → archivo', ...C.rutas.map(([u, f]) => `- ${u} → ${f}`));
+    l.push('', '## Funciones clave', ...C.funciones.map(([f, d, q]) => `- ${f} (${d}): ${q}`));
+    C.recorridos.forEach(r => l.push('', `## Recorrido: ${r.titulo}`, ...r.pasos.map((x, i) => `${i + 1}. ${x}`)));
+    l.push('', '## Simulacro "abra y busque"', ...C.simulacro.map(([q, a]) => `- ${q} → ${a}`));
+    l.push('', '## Atajos de VS Code', ...C.atajos.map(([k, v]) => `- ${k}: ${v}`));
+    return l.join('\n');
+  }
+
+  function vistaCodigo() {
+    const C = D.codigo;
+    if (!C) return '<section><h1>Mapa del código</h1></section>';
+    const fila = (a, b) => `<li><code>${esc(a)}</code><span>${esc(b)}</span></li>`;
+    return `
+      <section class="entra"><h1>Mapa del código</h1>
+        <p class="bajada">Para cuando digan: "abra la carpeta de X y busque la función Y". No se memorizan archivos: se aplican 3 preguntas.</p>
+        <p class="mono" style="margin-top:12px;color:var(--texto-2)">${esc(C.carpeta)}</p>
+        <div class="acciones"><button class="btn btn-2" data-codigo>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button></div></section>
+      <section class="seccion"><h2>Las 3 preguntas</h2>
+        <div class="panel esencial" style="margin-top:16px"><ol class="puntos">${C.preguntas.map(q => `<li><span><strong>${esc(q.p)}</strong><br>${esc(q.r)}</span></li>`).join('')}</ol></div></section>
+      <section class="seccion"><h2>Dirección → archivo</h2>
+        <ul class="tabla-codigo">${C.rutas.map(([u, f]) => fila(u, f)).join('')}</ul></section>
+      <section class="seccion"><h2>Funciones clave</h2><p>Nombre, archivo:línea y qué hace.</p>
+        <ul class="tabla-codigo funciones">${C.funciones.map(([f, d, q]) => `<li><code>${esc(f)}</code><span><strong class="mono">${esc(d)}</strong><br>${esc(q)}</span></li>`).join('')}</ul></section>
+      <section class="seccion"><h2>Recorridos</h2><p>Cómo viaja cada acción, del botón a la base de datos.</p>
+        <div class="acordeon">${C.recorridos.map((r, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(r.titulo)}</summary><ol class="pasos-codigo">${r.pasos.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>`).join('')}</div></section>
+      <section class="seccion"><h2>Simulacro: abra y busque</h2><p>Lean la pregunta, búsquenla en VS Code y luego toquen para ver la respuesta.</p>
+        <div class="acordeon">${C.simulacro.map(([q, a]) => `<details><summary>${esc(q)}</summary><ul><li><code>${esc(a)}</code></li></ul></details>`).join('')}</div></section>
+      <section class="seccion"><h2>Atajos de VS Code</h2>
+        <ul class="tabla-codigo">${C.atajos.map(([k, v]) => fila(k, v)).join('')}</ul></section>`;
+  }
+
   function vistaConceptos() {
     const grupos = (D.gruposConceptos || []).map((g, gi) => {
       const items = CONC.filter(c => c.grupo === g.id).map((c, i) => `
@@ -120,7 +156,8 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     return `
       <section class="entra"><h1>Conceptos clave</h1>
         <p class="bajada">Todo lo que hay que entender para hablar con autoridad: qué es cada cosa, cómo la usa ${esc(nombreProyecto())} y un video corto en español.</p>
-        <div class="acciones"><button class="btn btn-2" data-conceptos>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button></div>
+        <div class="acciones"><button class="btn btn-2" data-conceptos>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button>
+          <a class="btn btn-1" href="#/codigo"><i class="ph-bold ph-folder-open"></i>Mapa del código</a></div>
       </section>
       ${grupos}`;
   }
@@ -385,6 +422,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       ${frases}
       <div class="panel"><h3>Preguntas del jurado</h3>${preguntas}</div>
       ${(D.conceptosPorEsfera?.[e.n] || []).length ? `<div class="panel"><h3>Conceptos para repasar</h3><div class="chips">${D.conceptosPorEsfera[e.n].map(id => concepto(id)).filter(Boolean).map(c => `<a class="chip" href="#/concepto/${c.id}"><i class="ph-bold ${c.video ? 'ph-play-circle' : 'ph-book-open-text'}"></i>${esc(c.nombre)}</a>`).join('')}</div></div>` : ''}
+      ${e.n === 15 ? `<a class="btn btn-1" href="#/codigo" style="margin-top:14px"><i class="ph-bold ph-folder-open"></i>Abrir el mapa del código</a>` : ''}
       <details class="panel plegable"><summary>Explicación completa</summary>${contenido}</details>
       <details class="panel plegable"><summary>Material de estudio y NotebookLM</summary>
         ${medios(e)}
@@ -565,7 +603,8 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   function vistaNotebook() {
     const N = D.notebooklm;
     const botones = D.bloques.map((b, i) => `<button class="btn btn-2 btn-chico" data-bloque="${b.id}"><i class="ph-bold ph-download-simple"></i>${i + 1} · ${esc(b.nombre)}</button>`).join('')
-      + `<button class="btn btn-2 btn-chico" data-conceptos><i class="ph-bold ph-download-simple"></i>6 · Conceptos</button>`;
+      + `<button class="btn btn-2 btn-chico" data-conceptos><i class="ph-bold ph-download-simple"></i>6 · Conceptos</button>`
+      + `<button class="btn btn-2 btn-chico" data-codigo><i class="ph-bold ph-download-simple"></i>7 · Mapa del código</button>`;
     const studio = (N.studio || []).map((x, i) => `<li><div><strong>${esc(x.boton)}</strong>${x.instruccion ? `<p>${esc(x.instruccion)}</p>` : '<p>No necesita instrucción.</p>'}</div>
       ${x.instruccion ? `<button class="btn btn-2 btn-chico" data-copiar-studio="${i}">Copiar</button>` : ''}</li>`).join('');
     return `
@@ -593,7 +632,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   function render() {
     const partes = location.hash.replace(/^#\/?/, '').split('/');
     const ruta = partes[0] || 'mapa';
-    const activa = ruta === 'esfera' ? 'mapa' : ruta === 'concepto' ? 'conceptos' : ruta;
+    const activa = ruta === 'esfera' ? 'mapa' : (ruta === 'concepto' || ruta === 'codigo') ? 'conceptos' : ruta;
     document.querySelectorAll('.tabs a').forEach(a => {
       if (a.dataset.ruta === activa) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
@@ -612,7 +651,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     document.body.classList.remove('en-mapa');
     app.dataset.vista = ruta;
     const vistas = { avance: vistaAvance, guia: vistaGuia, estudio: vistaEstudio, notebooklm: vistaNotebook, fuentes: vistaFuentes,
-      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]) };
+      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]), codigo: vistaCodigo };
     app.innerHTML = (vistas[ruta] ||(() => `<section><h1>Esta página no existe</h1><div class="acciones"><a class="btn btn-1" href="#/mapa">Ir al mapa</a></div></section>`))();
     const h1 = app.querySelector('h1');
     document.title = `${h1 ? h1.textContent : 'Tablero'} · ${nombreProyecto()}`;
@@ -629,6 +668,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     }
     if (ev.target.closest('[data-centrar]')) centrar();
     if (ev.target.closest('[data-todo]')) descargar(`${nombreProyecto()} - todas las esferas.md`, todoMarkdown());
+    if (ev.target.closest('[data-codigo]')) descargar(`${nombreProyecto()} 7 - Mapa del codigo.md`, codigoMarkdown());
     if (ev.target.closest('[data-conceptos]')) descargar(`${nombreProyecto()} - conceptos clave.md`, conceptosMarkdown());
     const bq = ev.target.closest('[data-bloque]');
     if (bq) { const i = D.bloques.findIndex(b => b.id === bq.dataset.bloque); descargar(`${nombreProyecto()} ${i + 1} - ${D.bloques[i].nombre}.md`, bloqueMarkdown(bq.dataset.bloque)); }

@@ -452,3 +452,12 @@ pre.prompt {
 .plegable summary::after { content: "+"; font-family: var(--mono); color: var(--texto-2); font-size: 20px; }
 .plegable[open] summary::after { content: "−"; }
 .plegable[open] summary { margin-bottom: 12px; }
+
+/* Mapa del código */
+.tabla-codigo { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--borde); }
+.tabla-codigo li { display: grid; grid-template-columns: minmax(150px, 0.8fr) 1.2fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--borde); align-items: start; font-size: 15px; }
+.tabla-codigo code, .acordeon code { font-family: var(--mono); font-size: 13.5px; color: var(--texto-fuerte); background: var(--superficie-2); border: 1px solid var(--borde); border-radius: 6px; padding: 2px 7px; word-break: break-word; }
+.tabla-codigo .mono { font-size: 13px; color: var(--azul-tx); font-weight: 500; }
+.pasos-codigo { margin: 0 0 20px; padding-left: 22px; font-family: var(--mono); font-size: 13.5px; line-height: 1.55; }
+.pasos-codigo li + li { margin-top: 8px; }
+@media (max-width: 767px) { .tabla-codigo li { grid-template-columns: 1fr; gap: 6px; } }
