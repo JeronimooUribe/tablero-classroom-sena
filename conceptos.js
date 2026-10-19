@@ -194,15 +194,15 @@ window.TABLERO.conceptos = [
   { id: 'cloudinary', grupo: 'extras', nombre: 'Cloudinary (imágenes en la nube)',
     que: 'Un servicio que guarda imágenes en la nube y las entrega rápido desde servidores repartidos por el mundo (una CDN).',
     analogia: 'Como una bodega de fotos con sucursales en todas las ciudades: la foto te llega desde la más cercana.',
-    enClassHub: 'Cuando el docente adjunta una imagen a una tarea, al horario o a un aviso, app/api/upload/route.ts la sube a Cloudinary (carpeta classhub/tasks), con un máximo de 5 MB y límite de subidas. En la base solo se guarda la dirección de la imagen, no la imagen.',
+    enClassHub: 'Cuando el monitor adjunta una imagen a una tarea, al horario o a un aviso, app/api/upload/route.ts la sube a Cloudinary (carpeta classhub/tasks), con un máximo de 5 MB y límite de subidas. En la base solo se guarda la dirección de la imagen, no la imagen.',
     pregunta: { p: '¿Por qué no guardan las imágenes en la base de datos?', r: 'Porque las imágenes pesan mucho y volverían lenta la base. Cloudinary las guarda y las entrega optimizadas; la base solo guarda el enlace.' },
     video: { id: 'nmmBPqeMqWk', titulo: '¿Qué es Cloudinary? Hosting de imágenes y videos', canal: 'Fazt Code' } },
 
   { id: 'ia', grupo: 'extras', nombre: 'Inteligencia artificial (API de Claude)',
     que: 'Una API de inteligencia artificial permite que un programa le envíe texto a un modelo de IA y reciba una respuesta. Se paga por uso.',
     analogia: 'Es tener un asistente al otro lado del teléfono: le dictas algo desordenado y te lo devuelve organizado.',
-    enClassHub: 'app/api/ai/assist/route.ts envía el texto que escribe el docente (por ejemplo: "para el viernes taller de mate ejercicios 1 al 12") al modelo claude-haiku-4-5 de Anthropic, con instrucciones de devolver un JSON con título, descripción, materia, prioridad, tipo y dónde se entrega. Esos campos llenan el formulario. La clave de la API vive en las variables de Railway, nunca en el código.',
-    pregunta: { p: '¿La IA crea las tareas sola?', r: 'No. La IA solo convierte el texto del docente en los campos del formulario. El docente revisa, corrige si hace falta y es quien publica.' },
+    enClassHub: 'app/api/ai/assist/route.ts envía el texto que escribe el monitor (por ejemplo: "para el viernes taller de mate ejercicios 1 al 12") al modelo claude-haiku-4-5 de Anthropic, con instrucciones de devolver un JSON con título, descripción, materia, prioridad, tipo y dónde se entrega. Esos campos llenan el formulario. La clave de la API vive en las variables de Railway, nunca en el código.',
+    pregunta: { p: '¿La IA crea las tareas sola?', r: 'No. La IA solo convierte el texto del monitor en los campos del formulario. El monitor revisa, corrige si hace falta y es quien publica.' },
     video: { id: 'LAB4XwYX-ig', titulo: 'Cómo usar la API de Claude: tutorial práctico', canal: 'Miguel TEP' } },
 
   { id: 'pruebas', grupo: 'extras', nombre: 'Pruebas automáticas',

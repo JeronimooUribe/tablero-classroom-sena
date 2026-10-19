@@ -15,7 +15,7 @@
       'Las tareas se dictaban en clase y no quedaban escritas en un lugar común.',
       'No había seguimiento de qué estaba hecho y qué pendiente.',
       'WhatsApp mezcla todo; ClassHub separa por grupo y materia.',
-      'Afecta a estudiantes, docentes y papás.',
+      'Afecta a estudiantes, monitores de tareas y papás.',
     ],
     3: [
       'Objetivo general: tareas y avisos de cada grupo en un solo lugar, en el celular.',
@@ -30,11 +30,11 @@
       'Estados por estudiante: pendiente, en proceso, completada.',
       'Calendario, avisos del grupo y foto del horario.',
       'Puntos: +2 por entrar al día, +3 al empezar y +10 al completar. Seis rangos, de Novato a Leyenda.',
-      'IA: convierte el texto libre del docente en una tarea con sus campos llenos.',
+      'IA: convierte el texto libre del monitor en una tarea con sus campos llenos.',
     ],
     5: [
-      'Tres roles: estudiante, docente (moderador) y administrador.',
-      'El docente crea tareas, avisos, horario y materias, y usa el chat de docentes.',
+      'Tres roles: estudiante, monitor (moderador) y administrador.',
+      'El monitor crea tareas, avisos, horario y materias, y usa el chat de monitores.',
       'El admin gestiona usuarios, grupos, materias, pagos y la configuración.',
       'Registro con correo @inemjose.edu.co, código y grupo.',
       'Permisos revisados dos veces: en el middleware y en cada ruta de la API.',
@@ -42,7 +42,7 @@
     6: [
       'Público: QR → estudiante@classhub.demo, código demo2026.',
       'Mostrar: tablero → marcar "En proceso" → calendario → avisos.',
-      'Docente (cuenta del equipo) crea una tarea y aparece al instante en el estudiante.',
+      'Monitor (cuenta del equipo) crea una tarea y aparece al instante en el estudiante.',
       'Datos de prueba en el grupo "Demo SENA", separado de los estudiantes reales.',
       'Sin internet: ARRANCAR OFFLINE.bat (Docker) en el computador.',
     ],
@@ -85,7 +85,7 @@
     ],
     12: [
       'Los 4 objetivos se cumplieron.',
-      'Uso real: 49 cuentas (44 estudiantes, 3 docentes, 2 admins), 30 tareas y 118 seguimientos.',
+      'Uso real: 49 cuentas (44 estudiantes, 3 monitores, 2 admins), 30 tareas y 118 seguimientos.',
       'Capacidad cargada: 90 grupos y 622 materias. No decir "600 estudiantes".',
       'Futuro: cifrar códigos, activar recordatorios y terminar las estadísticas.',
       'Cierre: volver a la pregunta de origen y mostrar el QR.',
@@ -111,7 +111,7 @@
     ],
     16: [
       'Probar el QR antes de entrar.',
-      'Dejar abiertas la sesión de estudiante y la de docente.',
+      'Dejar abiertas la sesión de estudiante y la de monitor.',
       'Modo offline arrancado como respaldo, más cargador y adaptador HDMI.',
       'Si falla el internet, usar localhost:3000. Si vamos tarde, acortar las esferas 5 y 10.',
     ],

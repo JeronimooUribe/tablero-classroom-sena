@@ -6,7 +6,7 @@
   const URL_APP = 'classhub-production.up.railway.app';
 
   T.actualizado = '2026-10-18';
-  T.proyecto.frase = 'Una aplicación web para que los estudiantes del INEM no pierdan ninguna tarea: los docentes las publican, los estudiantes las ven en el celular y marcan su avance.';
+  T.proyecto.frase = 'Una aplicación web para que los estudiantes del INEM no pierdan ninguna tarea: el monitor de tareas de cada salón las publica, los estudiantes las ven en el celular y marcan su avance.';
   T.proyecto.preguntaOrigen = '¿Cómo logramos que ningún estudiante se pierda una tarea, si las tareas se dictan en clase y no quedan escritas en ningún lugar común?';
 
   T.checklist = [
@@ -33,7 +33,7 @@ Mapa de la exposición, en una frase: primero el problema, después lo que hace 
     arranque: 'Buenos días. ¿Cuántos de ustedes se han enterado de una tarea el mismo día que había que entregarla?',
     relevo: 'Para entender por qué existe ClassHub, primero hay que ver el problema que vivíamos en el salón.',
     preguntas: [
-      { p: '¿Qué es ClassHub en una sola frase?', r: 'Una aplicación web donde los docentes publican las tareas de cada grupo y los estudiantes las ven y marcan su avance desde el celular.' },
+      { p: '¿Qué es ClassHub en una sola frase?', r: 'Una aplicación web donde el monitor de tareas de cada salón publica las tareas de cada grupo y los estudiantes las ven y marcan su avance desde el celular.' },
       { p: '¿Por qué se llama ClassHub?', r: '"Class" es clase y "hub" es punto central: el lugar donde se reúne todo lo de la clase. Antes se llamaba SchoolTasks; se cambió el 18 de mayo de 2026.' },
     ],
   });
@@ -45,24 +45,24 @@ Mapa de la exposición, en una frase: primero el problema, después lo que hace 
 El problema que vivíamos:
 • Las tareas se decían en voz alta o en el tablero, y quien faltaba o no anotaba se quedaba sin saber.
 • No había un solo lugar donde ver las tareas de todas las materias del grupo.
-• Los docentes no tenían una forma sencilla de publicarlas en digital para su grupo.
+• Los monitores de tareas de cada salón no tenían una forma sencilla de publicarlas en digital para su grupo: todo terminaba perdido en los grupos de WhatsApp.
 • Nadie sabía qué tareas tenía hechas y cuáles pendientes.
 • Los avisos del salón se perdían entre los chats de WhatsApp.
 
-A quién le duele: a los estudiantes, que pierden notas por olvidos; a los docentes, que repiten lo mismo varias veces; y a los papás, que no saben qué hay pendiente.
+A quién le duele: a los estudiantes, que pierden notas por olvidos; a los profesores, que repiten lo mismo varias veces; y a los papás, que no saben qué hay pendiente.
 
 Cómo se resolvía antes: cuadernos, fotos del tablero y grupos de WhatsApp donde la información se pierde entre mensajes.`,
     arranque: 'Todo empezó con una pregunta muy simple: ¿cómo hacemos para que nadie se pierda una tarea?',
     relevo: 'Con ese problema claro, nos pusimos unos objetivos concretos.',
     preguntas: [
       { p: '¿Cómo saben que el problema era real?', r: 'Lo vivíamos todos los días en nuestro propio salón: tareas dictadas en clase que no quedaban escritas en ningún lado. Ese es el origen. Si hicieron encuesta o entrevistas, este es el momento de mencionarlo con el dato exacto.' },
-      { p: '¿Por qué no usar Google Classroom o WhatsApp?', r: 'WhatsApp mezcla las tareas con todo lo demás y no lleva el estado de cada una. Classroom depende de que cada docente lo adopte y no está pensado para ver todas las materias del grupo juntas. ClassHub está hecho a la medida del INEM: los 90 grupos del colegio, el correo institucional y el seguimiento por estudiante.' },
+      { p: '¿Por qué no usar Google Classroom o WhatsApp?', r: 'WhatsApp mezcla las tareas con todo lo demás y no lleva el estado de cada una. Classroom depende de que cada profesor lo adopte y no está pensado para ver todas las materias del grupo juntas. ClassHub está hecho a la medida del INEM: los 90 grupos del colegio, el correo institucional y el seguimiento por estudiante.' },
     ],
   });
 
   llenar(3, {
     contenido:
-`Objetivo general: crear una aplicación web, a la medida del INEM, donde los docentes publiquen las tareas y avisos de cada grupo y los estudiantes los consulten y hagan seguimiento desde cualquier celular.
+`Objetivo general: crear una aplicación web, a la medida del INEM, donde los monitores de tareas publiquen las tareas y avisos de cada grupo y los estudiantes los consulten y hagan seguimiento desde cualquier celular.
 
 Objetivos específicos:
 1. Publicar tareas por materia y grupo, con fecha de entrega y prioridad (normal o urgente).
@@ -70,14 +70,14 @@ Objetivos específicos:
 3. Que cada persona entre con su correo institucional y vea solo lo que le corresponde según su rol.
 4. Que funcione en el celular sin instalar nada, y que se pueda instalar como app.
 
-Qué sí hace: tareas, calendario, avisos, horario del grupo, puntos por constancia, chat interno de docentes, panel de administración, control de acceso y asistente de IA para redactar tareas.
+Qué sí hace: tareas, calendario, avisos, horario del grupo, puntos por constancia, chat interno de monitores, panel de administración, control de acceso y asistente de IA para redactar tareas.
 
 Qué no hace, a propósito: no califica ni reemplaza la plataforma de notas del colegio, no recibe archivos de entrega (la tarea dice dónde se entrega: Classroom, Moodle, Teams, correo o en físico) y no es una red social.`,
     arranque: 'Nuestro objetivo general fue uno: que las tareas de cada grupo estuvieran en un solo lugar, en el celular de cada estudiante.',
     relevo: 'Ya saben por qué existe y qué buscábamos. Ahora les mostramos qué hace ClassHub.',
     preguntas: [
       { p: '¿Cumplieron todos los objetivos?', r: 'Sí, los cuatro están funcionando y se pueden ver en la demo. Lo que no alcanzamos fue el microservicio de estadísticas en Java ni el panel de analíticas; quedaron como trabajo futuro.' },
-      { p: '¿Por qué no reciben las entregas de los trabajos?', r: 'Fue una decisión de alcance: cada docente ya usa su plataforma (Classroom, Moodle, Teams). ClassHub organiza y recuerda; no compite con esas herramientas. Cada tarea indica dónde se entrega.' },
+      { p: '¿Por qué no reciben las entregas de los trabajos?', r: 'Fue una decisión de alcance: cada profesor ya usa su plataforma (Classroom, Moodle, Teams). ClassHub organiza y recuerda; no compite con esas herramientas. Cada tarea indica dónde se entrega.' },
     ],
   });
 
@@ -87,12 +87,12 @@ Qué no hace, a propósito: no califica ni reemplaza la plataforma de notas del 
 `ClassHub es una página web que funciona como una app. Se abre desde el celular o el computador, sin instalar nada, aunque también se puede instalar en la pantalla de inicio (es una PWA).
 
 Funciones principales:
-• Tareas: el docente publica título, materia, descripción, fecha de entrega, prioridad, tipo (taller, evaluación, exposición, proyecto o grupal), dónde se entrega, imágenes y enlaces.
+• Tareas: el monitor publica título, materia, descripción, fecha de entrega, prioridad, tipo (taller, evaluación, exposición, proyecto o grupal), dónde se entrega, imágenes y enlaces.
 • Seguimiento: cada estudiante marca cada tarea como pendiente, en proceso o completada. Las urgentes y las vencidas se destacan.
 • Calendario: todas las entregas del mes en una vista.
-• Avisos y horario: el docente publica avisos con imagen y la foto del horario del grupo.
+• Avisos y horario: el monitor publica avisos con imagen y la foto del horario del grupo.
 • Puntos y rangos: el estudiante gana puntos por entrar cada día (2), por empezar una tarea (3) y por completarla (10), y sube de rango: Novato, Estudiante, Destacado, Avanzado, Élite y Leyenda.
-• Asistente de IA: el docente escribe la tarea como la dijo en clase ("para el viernes taller de mate, ejercicios 1 al 12") y la IA llena el formulario sola: título, descripción, materia, prioridad, tipo y dónde se entrega.
+• Asistente de IA: el monitor escribe la tarea como la dijo en clase ("para el viernes taller de mate, ejercicios 1 al 12") y la IA llena el formulario sola: título, descripción, materia, prioridad, tipo y dónde se entrega.
 
 Por qué esta solución: es web, así que funciona en cualquier celular; es gratis para el estudiante; y cada grupo ve solo lo suyo.`,
     arranque: 'ClassHub es, en pocas palabras, la agenda del salón, pero en el celular y siempre al día.',
@@ -107,12 +107,12 @@ Por qué esta solución: es web, así que funciona en cualquier celular; es grat
     contenido:
 `Tres roles:
 • Estudiante: ve las tareas de su grupo, marca su avance, consulta el calendario, los avisos y el horario, y gana puntos.
-• Docente (en el sistema se llama "moderador"): todo lo del estudiante, más crear, editar y borrar tareas y avisos de su grupo, publicar el horario, administrar las materias y usar el chat interno de docentes.
+• Monitor de tareas (en el sistema se llama "moderador"; es un estudiante elegido por el grupo): todo lo del estudiante, más crear, editar y borrar tareas y avisos de su grupo, publicar el horario, administrar las materias y usar el chat interno de monitores.
 • Administrador: todo lo anterior, más gestionar usuarios, grupos, materias, pagos de acceso y la configuración general.
 
 Historias de usuario principales:
 • "Como estudiante, quiero ver todas mis tareas en un solo lugar para no olvidar ninguna."
-• "Como docente, quiero publicar una tarea una sola vez para que todo mi grupo la vea."
+• "Como monitor de tareas, quiero publicar una tarea una sola vez para que todo mi grupo la vea."
 • "Como administrador, quiero controlar quién entra para que solo usen la plataforma estudiantes del colegio."
 
 Requisitos funcionales (lo que hace): iniciar sesión, listar y filtrar tareas, cambiar el estado, crear tareas, publicar avisos y administrar usuarios.
@@ -121,7 +121,7 @@ Requisitos no funcionales (cómo lo hace): funciona en celular, carga rápido, e
     arranque: 'ClassHub tiene tres tipos de usuario, y cada uno ve una aplicación distinta según su rol.',
     relevo: 'Mejor que contarlo es verlo. Vamos a la demo.',
     preguntas: [
-      { p: '¿Cómo se controla qué ve cada rol?', r: 'En dos lugares. El middleware revisa la sesión antes de abrir cada página y saca a quien no tiene permiso. Y cada ruta del servidor vuelve a revisar el rol antes de responder. Por ejemplo, un estudiante que intenta abrir el chat de docentes es redirigido a su tablero.' },
+      { p: '¿Cómo se controla qué ve cada rol?', r: 'En dos lugares. El middleware revisa la sesión antes de abrir cada página y saca a quien no tiene permiso. Y cada ruta del servidor vuelve a revisar el rol antes de responder. Por ejemplo, un estudiante que intenta abrir el chat de monitores es redirigido a su tablero.' },
       { p: '¿Cómo se registra un estudiante?', r: 'En /register, con su correo institucional (@inemjose.edu.co), su código de estudiante y su grupo. El sistema solo acepta el dominio del colegio y máximo 5 registros por dirección cada 15 minutos. Con el control de acceso activo, la cuenta nueva queda pendiente hasta que el administrador la active.' },
     ],
   });
@@ -135,7 +135,7 @@ Guion fijo, en orden:
 2. Entrar como estudiante: el tablero con las 6 tareas del grupo "Demo SENA" y las 2 urgentes destacadas arriba.
 3. Marcar "Presentar el proyecto de grado" como "En proceso" (por dentro suma 3 puntos).
 4. Abrir el calendario y después los avisos.
-5. Entrar como docente (cuenta solo del equipo) y crear una tarea nueva en vivo.
+5. Entrar como monitor (cuenta solo del equipo) y crear una tarea nueva en vivo.
 6. Volver al celular del estudiante y mostrar que la tarea apareció al instante.
 7. (Solo offline) Entrar como administrador y mostrar el panel de usuarios y grupos.
 
@@ -211,14 +211,14 @@ Alternativas descartadas: PHP con Laravel (dos mundos distintos, front y back); 
 
 Las tablas principales:
 • groups: los grupos del colegio (90, como 11-1 o 6-3).
-• users: estudiantes, docentes y administradores, con su grupo, rol, puntos y rango.
-• subjects: las materias de cada grupo, con el nombre del docente.
+• users: estudiantes, monitores y administradores, con su grupo, rol, puntos y rango.
+• subjects: las materias de cada grupo, con el nombre del profesor de la materia.
 • tasks: las tareas (título, materia, descripción, prioridad, tipo, fecha de entrega e imágenes).
 • task_status: el estado de cada tarea para cada estudiante. Es una tabla intermedia: un estudiante tiene muchas tareas y una tarea tiene muchos estudiantes.
 • announcements: los avisos de cada grupo.
 • user_payment_status: el control de acceso de cada cuenta (PENDING, ACTIVE o SUSPENDED).
 • app_config: la configuración general, como el modo de acceso o si se permiten cuentas nuevas.
-• staff_chat, schedules, push_subscriptions, refresh_tokens, login_attempts y password_reset_tokens: chat de docentes, horarios, notificaciones, sesiones, seguridad y recuperación.
+• staff_chat, schedules, push_subscriptions, refresh_tokens, login_attempts y password_reset_tokens: chat de monitores, horarios, notificaciones, sesiones, seguridad y recuperación.
 
 Relaciones clave (modelo entidad-relación): un grupo tiene muchos usuarios, materias, tareas y avisos. Una tarea pertenece a un grupo y a una materia. task_status une usuario y tarea.
 
@@ -277,7 +277,7 @@ Seguridad:
 Retos que vencimos:
 1. La zona horaria de Colombia (UTC-5): las tareas vencían a la hora equivocada.
 2. Integrar el control de pagos sin romper el ingreso normal.
-3. Un bug grave encontrado en la revisión final: desde el 19 de junio, una regla del servidor bloqueaba a estudiantes y docentes en la API v1 y no veían sus tareas. Lo encontramos, escribimos una prueba que reproducía el fallo y lo corregimos.
+3. Un bug grave encontrado en la revisión final: desde el 19 de junio, una regla del servidor bloqueaba a estudiantes y monitores en la API v1 y no veían sus tareas. Lo encontramos, escribimos una prueba que reproducía el fallo y lo corregimos.
 
 Qué haríamos diferente: pruebas de punta a punta desde el principio, y aplicar el cifrado de los códigos de estudiante.`,
     arranque: 'Para nosotros no bastaba con que funcionara una vez: tenía que funcionar siempre y ser seguro.',
@@ -298,7 +298,7 @@ Qué haríamos diferente: pruebas de punta a punta desde el principio, y aplicar
 3. Ingreso seguro por rol: cumplido.
 4. Funciona en celular sin instalar nada: cumplido (PWA).
 
-Datos reales: la plataforma tiene cargados los 90 grupos del colegio y 622 materias. Hubo 49 cuentas reales (44 estudiantes, 3 docentes y 2 administradores) en 4 grupos, con 30 tareas y 118 seguimientos. No digan "600 estudiantes": esa es la capacidad pensada para el colegio, no el uso real.
+Datos reales: la plataforma tiene cargados los 90 grupos del colegio y 622 materias. Hubo 49 cuentas reales (44 estudiantes, 3 monitores y 2 administradores) en 4 grupos, con 30 tareas y 118 seguimientos. No digan "600 estudiantes": esa es la capacidad pensada para el colegio, no el uso real.
 
 Lo que aprendimos: a construir una aplicación completa de punta a punta, a trabajar con Git, a escribir pruebas, a desplegar en la nube y a revisar con honestidad lo que no funcionaba.
 
@@ -308,8 +308,8 @@ Cierre: volver a la pregunta de origen. "Empezamos preguntándonos cómo hacer q
     arranque: 'Volvamos a los cuatro objetivos que les mostramos al principio.',
     relevo: 'Gracias. Quedamos atentos a sus preguntas.',
     preguntas: [
-      { p: '¿Cuántas personas lo usaron de verdad?', r: '49 cuentas reales: 44 estudiantes, 3 docentes y 2 administradores, en 4 grupos. Crearon 30 tareas con 118 seguimientos. La plataforma tiene cargados los 90 grupos del colegio.' },
-      { p: '¿Qué le falta para usarse en todo el colegio?', r: 'Cifrar los códigos de estudiante, activar el programador de recordatorios y que cada docente cree su cuenta. La infraestructura ya soporta los 90 grupos.' },
+      { p: '¿Cuántas personas lo usaron de verdad?', r: '49 cuentas reales: 44 estudiantes, 3 monitores y 2 administradores, en 4 grupos. Crearon 30 tareas con 118 seguimientos. La plataforma tiene cargados los 90 grupos del colegio.' },
+      { p: '¿Qué le falta para usarse en todo el colegio?', r: 'Cifrar los códigos de estudiante, activar el programador de recordatorios y que cada salón tenga su monitor de tareas con cuenta. La infraestructura ya soporta los 90 grupos.' },
       { p: '¿Cuánto cuesta mantenerlo?', r: 'Entre 0 y unos 5 dólares al mes: Railway para la app y la base, y los planes gratuitos de Cloudinary y Resend. La IA se paga por uso y es muy poco.' },
     ],
   });
@@ -329,7 +329,7 @@ Cierre: volver a la pregunta de origen. "Empezamos preguntándonos cómo hacer q
 • JWT: carnet digital firmado que prueba quién eres.
 • Cookie HttpOnly: donde se guarda la sesión, a salvo de JavaScript malicioso.
 • Middleware: el portero que revisa permisos antes de cada página.
-• Rol: el tipo de usuario (estudiante, docente o administrador).
+• Rol: el tipo de usuario (estudiante, monitor o administrador).
 • Hash (bcrypt): forma de guardar claves para que no se puedan leer.
 • Migración: script numerado que cambia la estructura de la base de forma controlada.
 • Despliegue: publicar la app en internet.
@@ -340,7 +340,7 @@ Cierre: volver a la pregunta de origen. "Empezamos preguntándonos cómo hacer q
 • Prueba automática: código que verifica que otro código funciona.
 • Respaldo (backup): copia de seguridad de la base de datos.
 • Gamificación: puntos y rangos para motivar.
-• IA (Claude de Anthropic): modelo que convierte el texto libre del docente en una tarea con sus campos llenos.`,
+• IA (Claude de Anthropic): modelo que convierte el texto libre del monitor en una tarea con sus campos llenos.`,
     preguntas: [
       { p: '¿Qué diferencia hay entre frontend y backend?', r: 'El frontend es lo que ves (botones y listas en el celular). El backend es lo que no ves: el servidor que revisa permisos, guarda en la base y responde.' },
     ],
@@ -360,7 +360,7 @@ Abajo están las preguntas probables, con su respuesta modelo. Cada esfera tiene
       { p: '¿Qué es una API REST y dónde la usan?', r: 'Es una forma de comunicar el frontend con el servidor por medio de direcciones y métodos HTTP. En ClassHub, GET /api/v1/tasks lista las tareas, POST crea una y PATCH /api/v1/tasks/{id}/status cambia el estado.' },
       { p: '¿Qué pasa si dos estudiantes marcan la misma tarea al tiempo?', r: 'No hay conflicto: el estado se guarda por estudiante en task_status, con una llave compuesta (tarea y usuario). Cada uno tiene su propia fila.' },
       { p: '¿Cómo publican una nueva versión?', r: 'Subimos el cambio a GitHub. GitHub Actions corre lint, tipos, pruebas, compilación y auditoría. Si todo pasa, Railway construye la imagen de Docker y la publica sola.' },
-      { p: '¿Qué hace la inteligencia artificial?', r: 'Le ahorra tiempo al docente: escribe la tarea en lenguaje normal, como la dijo en clase, y la IA (Claude de Anthropic, modelo claude-haiku-4-5) devuelve los campos del formulario llenos: título, descripción, materia, prioridad, tipo y dónde se entrega. El docente revisa y publica.' },
+      { p: '¿Qué hace la inteligencia artificial?', r: 'Le ahorra tiempo al monitor: escribe la tarea en lenguaje normal, como la dijo en clase, y la IA (Claude de Anthropic, modelo claude-haiku-4-5) devuelve los campos del formulario llenos: título, descripción, materia, prioridad, tipo y dónde se entrega. El monitor revisa y publica.' },
       { p: '¿Funciona sin internet?', r: 'La versión pública necesita internet. Para exponer tenemos un modo offline: la app y su base corren en el computador con Docker.' },
       { p: '¿Cómo escala si lo usa todo el colegio?', r: 'La app no guarda estado en memoria (la sesión va en el token), así que se pueden agregar más servidores. La base tiene índices por grupo y por fecha. El límite de hoy es el plan de Railway, no el diseño.' },
       { p: '¿Qué aprendieron de este proyecto?', r: 'Que construir es solo una parte: probar, documentar, desplegar y revisar con honestidad lo que no funciona es lo que lo vuelve un producto real.' },
@@ -374,7 +374,7 @@ Abajo están las preguntas probables, con su respuesta modelo. Cada esfera tiene
 `Dónde está en el computador de Jerónimo:
 Escritorio\\Programacion\\Proyectos_programacion\\Proyecto_tareas\\
 • ClassHub - Codigo: el código (repositorio de git).
-• ClassHub - Exposicion: QR, presentación de mayo, imágenes y la guía "LEEME - Como abrir ClassHub", con las cuentas y el código del docente.
+• ClassHub - Exposicion: QR, presentación de mayo, imágenes y la guía "LEEME - Como abrir ClassHub", con las cuentas y el código del monitor.
 • ClassHub - Historial: versiones viejas, instrucciones V2 a V8 y el microservicio Java sin terminar.
 
 Qué hay en el código:
@@ -388,7 +388,7 @@ Qué hay en el código:
 
 Cómo se abre:
 • Online: ${URL_APP} (o el QR). Público: estudiante@classhub.demo con el código demo2026.
-• Offline: abrir Docker Desktop y hacer doble clic en ClassHub - Codigo\\ARRANCAR OFFLINE.bat. Se abre localhost:3000 con las cuentas estudiante, docente y admin @classhub.demo, todas con el código demo2026.
+• Offline: abrir Docker Desktop y hacer doble clic en ClassHub - Codigo\\ARRANCAR OFFLINE.bat. Se abre localhost:3000 con las cuentas estudiante, monitor y admin @classhub.demo, todas con el código demo2026.
 • Para programar: npm install, después npm run dev, y abrir localhost:3000.
 
 Si no arranca: Docker debe decir "running". Si sale un error, se cierra con APAGAR OFFLINE.bat y se vuelve a intentar. Si no, se usa la versión online.`,
@@ -401,7 +401,7 @@ Si no arranca: Docker debe decir "running". Si sale un error, se cierra con APAG
     contenido:
 `Antes de entrar:
 • Probar el QR con un celular.
-• Dejar abierta la versión online con la sesión de estudiante, y en otra pestaña la de docente.
+• Dejar abierta la versión online con la sesión de estudiante, y en otra pestaña la de monitor.
 • Tener el modo offline ya arrancado como respaldo (Docker abierto y ARRANCAR OFFLINE.bat ejecutado).
 • Cargador, adaptador HDMI y datos en el celular por si falla el wifi.
 • Cerrar notificaciones y chats del computador.

@@ -3,7 +3,7 @@
 
 window.TABLERO.lider = {
   nombre: 'Jerónimo Uribe Garcés',
-  frase: 'ClassHub es una aplicación web full-stack hecha en Next.js con TypeScript, base de datos MySQL y desplegada en Railway. Los docentes publican tareas por grupo y los estudiantes las ven y marcan su avance desde el celular.',
+  frase: 'ClassHub es una aplicación web full-stack hecha en Next.js con TypeScript, base de datos MySQL y desplegada en Railway. El monitor de tareas de cada salón publica las tareas y los estudiantes las ven y marcan su avance desde el celular.',
 
   // Cada pieza: qué es · para qué la usa ClassHub · cómo reconocerla en el código · dónde está
   stack: [
@@ -23,7 +23,7 @@ window.TABLERO.lider = {
     { n: 'bcryptjs', que: 'Librería para guardar claves como hash (irreversible).', uso: 'Preparada para los códigos de estudiante; en producción la columna del hash no se creó (deuda).', reconocer: 'bcrypt.hash(), bcrypt.compare().', donde: 'app/api/auth/login/route.ts' },
     { n: 'Cloudinary', que: 'Servicio en la nube que guarda imágenes y las entrega rápido (CDN).', uso: 'Imágenes de tareas, avisos, horario y chat. En MySQL solo se guarda la URL.', reconocer: 'La función uploadToCloudinary() con await import(\'cloudinary\'); variables CLOUDINARY_*; carpeta classhub/tasks.', donde: 'app/api/upload/route.ts' },
     { n: 'Resend', que: 'Servicio para enviar correos desde una aplicación.', uso: 'Correo de recuperación del código y formulario de demo.', reconocer: 'new Resend(apiKey).emails.send(…)', donde: 'app/api/auth/forgot-password, app/api/demo' },
-    { n: 'Claude (Anthropic)', que: 'Modelo de inteligencia artificial, usado por API (se paga por uso).', uso: 'Convierte el texto libre del docente en los campos de una tarea. Modelo claude-haiku-4-5.', reconocer: 'import Anthropic from \'@anthropic-ai/sdk\'; messages.create({ model, system, messages }).', donde: 'app/api/ai/assist/route.ts' },
+    { n: 'Claude (Anthropic)', que: 'Modelo de inteligencia artificial, usado por API (se paga por uso).', uso: 'Convierte el texto libre del monitor en los campos de una tarea. Modelo claude-haiku-4-5.', reconocer: 'import Anthropic from \'@anthropic-ai/sdk\'; messages.create({ model, system, messages }).', donde: 'app/api/ai/assist/route.ts' },
     { n: 'Web Push + Service Worker', que: 'Notificaciones del navegador al celular, aunque la app esté cerrada. El service worker es un script que queda en segundo plano.', uso: 'Avisos de tarea nueva. Los recordatorios automáticos no tienen hoy un programador activo.', reconocer: 'webpush.sendNotification(…) en el servidor; self.addEventListener(\'push\') en sw.js.', donde: 'lib/push-server.ts, lib/push-client.ts, public/sw.js' },
     { n: 'PWA', que: 'Progressive Web App: página web instalable en el celular como si fuera app.', uso: 'ClassHub se puede agregar a la pantalla de inicio, con ícono y pantalla completa.', reconocer: 'public/manifest.json ("display": "standalone").', donde: 'public/manifest.json, public/sw.js' },
     { n: 'Vitest', que: 'Herramienta de pruebas automáticas.', uso: '140 pruebas: sesión, permisos, validaciones, límites. Simulan la base.', reconocer: 'describe(…), it(…), expect(…). Archivos .test.ts.', donde: '__tests__/' },
@@ -63,11 +63,11 @@ window.TABLERO.lider = {
     { n: 'Iniciar sesión', pasos: ['Pantalla app/(auth)/login/page.tsx envía correo + código a POST /api/auth/login', 'Zod valida el formato (LoginSchema)', 'rate-limit revisa 10 intentos en 15 min', 'Busca el usuario en la tabla users y compara el código', 'Revisa el acceso (user_payment_status)', 'signToken crea el JWT de 1 hora → cookie st_session; más un token de 30 días'] },
     { n: 'Ver las tareas', pasos: ['dashboard/page.tsx hace fetch(\'/api/v1/tasks?filter=active\')', 'middleware.ts verifica el JWT', 'app/api/tasks/route.ts → getTasksForGroup', 'SQL: SELECT de tasks + JOIN subjects + JOIN task_status del estudiante', 'Se dibuja un TaskCard por tarea'] },
     { n: 'Marcar una tarea', pasos: ['TaskStatusButton envía PATCH /api/v1/tasks/{id}/status', 'Zod: estado pendiente, en_proceso o completada', 'INSERT … ON DUPLICATE KEY UPDATE en task_status', 'addPoints: +3 (en proceso) o +10 (completada)'] },
-    { n: 'Crear una tarea (docente)', pasos: ['Formulario CreateTaskModal', 'POST /api/v1/tasks → requireRole("moderator")', 'createTask: INSERT en tasks con id UUID', '+5 puntos al docente y notifyNewTask avisa al grupo por push'] },
-    { n: 'Imágenes', pasos: ['El docente elige la foto en el formulario', 'POST /api/upload (app/api/upload/route.ts)', 'Revisa tamaño (máx. 5 MB), que sea JPEG, PNG o WebP mirando sus primeros bytes reales (magic bytes), y el límite de subidas', 'La sube a Cloudinary (carpeta classhub/tasks)', 'Cloudinary devuelve una URL; en MySQL solo se guarda la URL'] },
-    { n: 'Asistente de IA', pasos: ['El docente escribe la tarea en lenguaje normal (AITaskAssistant)', 'POST /api/ai/assist', 'Se envía a Claude (claude-haiku-4-5) con instrucciones (SYSTEM) de devolver JSON', 'El JSON (título, materia, prioridad, tipo, entrega) llena el formulario', 'El docente revisa y publica'] },
+    { n: 'Crear una tarea (monitor)', pasos: ['Formulario CreateTaskModal', 'POST /api/v1/tasks → requireRole("moderator")', 'createTask: INSERT en tasks con id UUID', '+5 puntos al monitor y notifyNewTask avisa al grupo por push'] },
+    { n: 'Imágenes', pasos: ['El monitor elige la foto en el formulario', 'POST /api/upload (app/api/upload/route.ts)', 'Revisa tamaño (máx. 5 MB), que sea JPEG, PNG o WebP mirando sus primeros bytes reales (magic bytes), y el límite de subidas', 'La sube a Cloudinary (carpeta classhub/tasks)', 'Cloudinary devuelve una URL; en MySQL solo se guarda la URL'] },
+    { n: 'Asistente de IA', pasos: ['El monitor escribe la tarea en lenguaje normal (AITaskAssistant)', 'POST /api/ai/assist', 'Se envía a Claude (claude-haiku-4-5) con instrucciones (SYSTEM) de devolver JSON', 'El JSON (título, materia, prioridad, tipo, entrega) llena el formulario', 'El monitor revisa y publica'] },
     { n: 'Notificaciones push', pasos: ['El celular acepta y se suscribe (lib/push-client.ts → /api/push/subscribe)', 'Se guarda en push_subscriptions', 'Al crear tarea, lib/push-server.ts envía con web-push (claves VAPID)', 'public/sw.js la muestra aunque la app esté cerrada'] },
-    { n: 'Horario, avisos y chat', pasos: ['Horario: foto → Cloudinary → tabla schedules (+3 puntos)', 'Avisos: POST /api/announcements → tabla announcements (+4 puntos)', 'Chat de docentes: /api/staff-chat → tabla staff_chat (solo docentes y admin)'] },
+    { n: 'Horario, avisos y chat', pasos: ['Horario: foto → Cloudinary → tabla schedules (+3 puntos)', 'Avisos: POST /api/announcements → tabla announcements (+4 puntos)', 'Chat de monitores: /api/staff-chat → tabla staff_chat (solo monitores y admin)'] },
     { n: 'Panel de administración', pasos: ['app/(app)/admin/page.tsx con 5 pestañas: Usuarios, Materias, Grupos, Acceso, Sistema', 'Usa las API de app/api/admin/*', 'Solo rol admin (middleware + requireRole)'] },
     { n: 'Registro y recuperar código', pasos: ['Registro: /api/auth/register solo acepta @inemjose.edu.co; máx. 5 registros cada 15 min', 'Recuperar: /api/auth/forgot-password crea un token (se guarda su hash) y lo envía por Resend', '/api/auth/reset-password cambia el código'] },
     { n: 'Permisos (dos capas)', pasos: ['Capa 1: middleware.ts revisa el rol en el JWT antes de cada página', 'Capa 2: cada API llama requireSession o requireRole', 'Roles: student (0), moderator (1), admin (2)'] },
@@ -76,12 +76,12 @@ window.TABLERO.lider = {
   tablas: [
     ['groups', 'Los 90 grupos (id, name, grade)'],
     ['users', 'Usuarios: email, student_code, full_name, role, group_id, points, rank_level'],
-    ['subjects', 'Materias por grupo, con el nombre del docente'],
+    ['subjects', 'Materias por grupo, con el nombre del profesor de la materia'],
     ['tasks', 'Tareas: título, materia, prioridad, tipo, entrega, imágenes, due_at'],
     ['task_status', 'Estado de cada tarea por estudiante (une users y tasks)'],
     ['announcements', 'Avisos del grupo'],
     ['schedules', 'Foto del horario de cada grupo'],
-    ['staff_chat', 'Mensajes del chat de docentes'],
+    ['staff_chat', 'Mensajes del chat de monitores'],
     ['user_payment_status', 'Acceso de cada estudiante: PENDING, ACTIVE o SUSPENDED'],
     ['app_config', 'Configuración general (modo de acceso)'],
     ['refresh_tokens · login_attempts · rate_limit_events · password_reset_tokens', 'Seguridad y sesiones'],
