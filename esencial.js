@@ -6,7 +6,7 @@
     1: [
       'ClassHub: app web para que ningún estudiante pierda una tarea.',
       'Hecha para el INEM José Félix de Restrepo (Medellín), media técnica con el SENA.',
-      'Equipo: Jerónimo, Juan Sebastián, Miguel Ángel y Diego.',
+      'Equipo: Jerónimo, Juan Sebastián, Juan Diego y Miguel Ángel.',
       'Gancho: "¿Cuántos se enteraron de una tarea el mismo día de entregarla?"',
       'Orden: problema → qué hace y demo → cómo está hecho → proceso y resultados.',
     ],

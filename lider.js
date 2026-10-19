@@ -105,13 +105,15 @@ window.TABLERO.lider = {
     ['1 h / 30 días', 'sesión / renovación'], ['10 en 15 min', 'intentos antes del bloqueo'], ['5 MB', 'máximo por imagen'], ['0–5 USD', 'costo al mes'],
   ],
 
-  apertura: `Buenos días. Somos Jerónimo Uribe, Juan Sebastián García, Miguel Ángel Valencia y Diego. ¿Cuántos se han enterado de una tarea el mismo día de entregarla? Para eso hicimos ClassHub: una aplicación web full-stack para que nadie pierda una tarea. Les mostramos el problema, la app funcionando (pueden probarla con el QR), cómo está construida y cómo la publicamos.`,
+  apertura: `Buenos días. Somos Jerónimo Uribe, Juan Sebastián Carmona, Juan Diego Gaviria y Miguel Ángel Valencia. ¿Cuántos se han enterado de una tarea el mismo día de entregarla? Para eso hicimos ClassHub: una aplicación web full-stack para que nadie pierda una tarea. Les mostramos el problema, la app funcionando (pueden probarla con el QR), cómo está construida y cómo la publicamos.`,
   cierre: `Empezamos preguntando cómo hacer que nadie pierda una tarea. Hoy la respuesta está funcionando: Next.js y TypeScript, MySQL, desplegada en Railway, con 140 pruebas automáticas y respaldo diario. Gracias. Respondemos sus preguntas.`,
 
   reparto: [
-    ['Problema, objetivos, alcance', 'Quien expone El porqué'], ['Funciones, roles, demo', 'Quien expone El qué'],
-    ['Tecnologías, arquitectura, base de datos', 'Quien expone El cómo'], ['Proceso, pruebas, seguridad', 'Quien expone El proceso'],
-    ['"¿Por qué decidieron…?"', 'Tú, como líder y creador'],
+    ['Inicio, arquitectura, API y HTTPS, seguridad (diapositivas 1–6) y cierre (16–17)', 'Jerónimo Uribe Garcés'],
+    ['Frontend, los 3 roles, app instalable y avisos (diapositivas 7–9)', 'Juan Sebastián Carmona'],
+    ['Base de datos, asistente de IA, imágenes (diapositivas 10–12)', 'Juan Diego Gaviria'],
+    ['Docker, despliegue en Railway, pruebas y respaldo (diapositivas 13–15)', 'Miguel Ángel Valencia'],
+    ['"¿Por qué decidieron…?"', 'Jerónimo, como líder y creador'],
   ],
   frases: [
     ['Pasar una pregunta', '"Eso lo trabajó [nombre], que les explica."'],

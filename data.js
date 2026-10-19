@@ -12,7 +12,7 @@ window.TABLERO = {
     programa: "Media técnica articulada con el SENA",
   },
 
-  equipo: ["Jerónimo Uribe Garcés", "Juan Sebastián García", "Miguel Ángel Valencia", "Diego"],
+  equipo: ["Jerónimo Uribe Garcés", "Juan Sebastián Carmona", "Juan Diego Gaviria", "Miguel Ángel Valencia"],
 
   checklist: [
     { titulo: "Investigar cómo se hace una exposición excelente y cómo aprenderla rápido", estado: "hecho",
@@ -33,10 +33,10 @@ window.TABLERO = {
 
   // Reparto de los 15 minutos. Cada bloque de exposición es de una persona.
   tiempos: [
-    { bloque: "porque",  desde: "0:00",  hasta: "3:15",  responsable: "Por asignar" },
-    { bloque: "que",     desde: "3:15",  hasta: "7:15",  responsable: "Por asignar", nota: "Incluye 2 minutos de demo" },
-    { bloque: "como",    desde: "7:15",  hasta: "10:45", responsable: "Por asignar" },
-    { bloque: "proceso", desde: "10:45", hasta: "14:15", responsable: "Por asignar" },
+    { bloque: "porque",  desde: "0:00",  hasta: "3:15",  responsable: "Reparto oficial: ver el guion por persona (presentacion-classhub-sena/guion.html)" },
+    { bloque: "que",     desde: "3:15",  hasta: "7:15",  responsable: "Reparto oficial: ver el guion por persona (presentacion-classhub-sena/guion.html)", nota: "Incluye 2 minutos de demo" },
+    { bloque: "como",    desde: "7:15",  hasta: "10:45", responsable: "Reparto oficial: ver el guion por persona (presentacion-classhub-sena/guion.html)" },
+    { bloque: "proceso", desde: "10:45", hasta: "14:15", responsable: "Reparto oficial: ver el guion por persona (presentacion-classhub-sena/guion.html)" },
     { bloque: "colchon", desde: "14:15", hasta: "15:00", responsable: "Todos", nota: "Colchón para imprevistos" },
   ],
 

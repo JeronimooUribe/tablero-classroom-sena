@@ -25,7 +25,7 @@
     contenido:
 `ClassHub es una aplicación web para organizar las tareas del colegio desde el celular. La construimos para el INEM José Félix de Restrepo, de Medellín, dentro de la media técnica articulada con el SENA.
 
-Somos Jerónimo Uribe Garcés, Juan Sebastián García, Miguel Ángel Valencia y Diego.
+Somos Jerónimo Uribe Garcés, Juan Sebastián Carmona, Juan Diego Gaviria y Miguel Ángel Valencia.
 
 Gancho sugerido: "¿Cuántos de ustedes han llegado a clase y se enteraron ahí mismo de que había una tarea para hoy?". Se deja un segundo de silencio y se sigue: "Eso nos pasaba a todos. Por eso hicimos ClassHub."
 
