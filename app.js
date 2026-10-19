@@ -569,10 +569,79 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
       </section>`;
   }
 
+  // ---------- Practicar: tarjetas de recuperación ----------
+  // Todas las preguntas del tablero en un mazo. Lo que el estudiante marca vive solo en su navegador.
+  const CLAVE_P = 'tablero-practica';
+  const leerP = () => { try { return JSON.parse(localStorage.getItem(CLAVE_P)) || {}; } catch { return {}; } };
+  const guardarP = m => { try { localStorage.setItem(CLAVE_P, JSON.stringify(m)); } catch { /* sin almacenamiento */ } };
+
+  function mazo() {
+    const t = [];
+    D.esferas.forEach(e => e.preguntas.forEach((q, i) => t.push({ id: `e${e.n}-${i}`, grupo: e.bloque, origen: `Esfera ${e.n} · ${e.titulo}`, p: q.p, r: q.r })));
+    CONC.forEach(c => t.push({ id: `c-${c.id}`, grupo: 'conceptos', origen: `Concepto · ${c.nombre}`, p: c.pregunta.p, r: c.pregunta.r }));
+    (D.codigo?.simulacro || []).forEach(([q, a], i) => t.push({ id: `s${i}`, grupo: 'codigo', origen: 'Mapa del código', p: q, r: a }));
+    return t;
+  }
+
+  const FILTROS = [['todas', 'Todas'], ['repasar', 'Para repasar'], ['porque', 'El porqué'], ['que', 'El qué'], ['como', 'El cómo'],
+    ['proceso', 'El proceso'], ['bastidores', 'Bastidores'], ['conceptos', 'Conceptos'], ['codigo', 'Código']];
+  const P = { filtro: 'todas', cola: [], actual: null, visible: false };
+
+  function armarCola() {
+    const m = leerP();
+    let t = mazo();
+    if (P.filtro === 'repasar') t = t.filter(x => m[x.id] === 'repasar');
+    else if (P.filtro !== 'todas') t = t.filter(x => x.grupo === P.filtro);
+    // Primero lo que no se ha dominado; dentro de cada grupo, en desorden.
+    const desorden = a => a.map(x => [Math.random(), x]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
+    P.cola = [...desorden(t.filter(x => m[x.id] !== 'sabida')), ...desorden(t.filter(x => m[x.id] === 'sabida'))];
+    P.actual = P.cola.shift() || null; P.visible = false;
+  }
+
+  function tarjetaHtml() {
+    const m = leerP(), todas = mazo();
+    const sabidas = todas.filter(x => m[x.id] === 'sabida').length;
+    const prog = `<div class="progreso" role="progressbar" aria-valuemin="0" aria-valuemax="${todas.length}" aria-valuenow="${sabidas}" aria-label="Preguntas dominadas"><div style="transform:scaleX(${sabidas / todas.length})"></div></div>
+      <p class="progreso-txt">Dominas ${sabidas} de ${todas.length} preguntas en este celular.</p>`;
+    if (!P.actual) return `${prog}<div class="panel tarjeta-p"><p class="tarjeta-preg">No quedan preguntas en este grupo.</p>
+      <div class="fila-btn"><button class="btn btn-1" data-p-filtro="todas">Practicar todas</button></div></div>`;
+    const a = P.actual;
+    return `${prog}
+      <div class="panel tarjeta-p">
+        <span class="tag c-gris">${esc(a.origen)}</span>
+        <p class="tarjeta-preg">${esc(a.p)}</p>
+        ${P.visible
+          ? `<div class="tarjeta-resp">${esc(a.r)}</div>
+             <div class="fila-btn"><button class="btn btn-1" data-p-sabia><i class="ph-bold ph-check"></i>La sabía</button>
+             <button class="btn btn-2" data-p-repasar><i class="ph-bold ph-arrow-counter-clockwise"></i>Repasar</button></div>`
+          : `<p class="tarjeta-pista">Respóndela en voz alta antes de mirar.</p>
+             <div class="fila-btn"><button class="btn btn-1" data-p-ver>Ver respuesta</button></div>`}
+        <p class="tarjeta-quedan">${P.cola.length} más en este grupo</p>
+      </div>`;
+  }
+
+  function vistaPracticar() {
+    armarCola();
+    return `
+      <section class="entra"><h1>Practicar</h1>
+        <p class="bajada">Recordar sin mirar es la forma de estudiar con más evidencia. Las que marques "Repasar" vuelven a salir.</p></section>
+      <div class="chips" style="margin-top:20px">${FILTROS.map(([id, n]) => `<button class="chip ${P.filtro === id ? 'chip-activo' : ''}" data-p-filtro="${id}">${n}</button>`).join('')}</div>
+      <div id="practica" style="margin-top:20px">${tarjetaHtml()}</div>`;
+  }
+
+  function pintarPractica() { const el = document.getElementById('practica'); if (el) el.innerHTML = tarjetaHtml(); }
+
+  function marcar(valor) {
+    const m = leerP(); m[P.actual.id] = valor; guardarP(m);
+    if (valor === 'repasar') P.cola.splice(Math.min(3, P.cola.length), 0, P.actual); // vuelve a salir pronto
+    P.actual = P.cola.shift() || null; P.visible = false; pintarPractica();
+  }
+
   function vistaGuia() {
     return `
       <section class="entra"><h1>Cómo hacer una exposición excelente</h1>
-        <p class="bajada">Lo que encontramos al investigar cómo se califica, cómo se cuenta un proyecto de software y cómo se responden las preguntas del jurado.</p></section>
+        <p class="bajada">Lo que encontramos al investigar cómo se califica, cómo se cuenta un proyecto de software y cómo se responden las preguntas del jurado.</p>
+        <div class="acciones"><a class="btn btn-2" href="#/avance"><i class="ph-bold ph-flag-banner"></i>Avance y reparto de los 15 minutos</a></div></section>
       <div class="acordeon">${D.guia.map((g, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(g.titulo)}</summary><ul>${g.puntos.map(p => `<li>${esc(p)}</li>`).join('')}</ul></details>`).join('')}</div>
       <p class="fuentes-link"><a href="#/fuentes">Ver las fuentes de la investigación</a></p>`;
   }
@@ -632,7 +701,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
   function render() {
     const partes = location.hash.replace(/^#\/?/, '').split('/');
     const ruta = partes[0] || 'mapa';
-    const activa = ruta === 'esfera' ? 'mapa' : (ruta === 'concepto' || ruta === 'codigo') ? 'conceptos' : ruta;
+    const activa = ruta === 'esfera' ? 'mapa' : (ruta === 'concepto' || ruta === 'codigo') ? 'conceptos' : ruta === 'avance' ? 'guia' : ruta;
     document.querySelectorAll('.tabs a').forEach(a => {
       if (a.dataset.ruta === activa) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
@@ -651,7 +720,7 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     document.body.classList.remove('en-mapa');
     app.dataset.vista = ruta;
     const vistas = { avance: vistaAvance, guia: vistaGuia, estudio: vistaEstudio, notebooklm: vistaNotebook, fuentes: vistaFuentes,
-      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]), codigo: vistaCodigo };
+      conceptos: vistaConceptos, concepto: () => vistaConcepto(partes[1]), codigo: vistaCodigo, practicar: vistaPracticar };
     app.innerHTML = (vistas[ruta] ||(() => `<section><h1>Esta página no existe</h1><div class="acciones"><a class="btn btn-1" href="#/mapa">Ir al mapa</a></div></section>`))();
     const h1 = app.querySelector('h1');
     document.title = `${h1 ? h1.textContent : 'Tablero'} · ${nombreProyecto()}`;
@@ -668,6 +737,11 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     }
     if (ev.target.closest('[data-centrar]')) centrar();
     if (ev.target.closest('[data-todo]')) descargar(`${nombreProyecto()} - todas las esferas.md`, todoMarkdown());
+    if (ev.target.closest('[data-p-ver]')) { P.visible = true; pintarPractica(); }
+    if (ev.target.closest('[data-p-sabia]')) marcar('sabida');
+    if (ev.target.closest('[data-p-repasar]')) marcar('repasar');
+    const pf = ev.target.closest('[data-p-filtro]');
+    if (pf) { P.filtro = pf.dataset.pFiltro; document.querySelectorAll('[data-p-filtro]').forEach(b => b.classList.toggle('chip-activo', b.dataset.pFiltro === P.filtro)); armarCola(); pintarPractica(); }
     if (ev.target.closest('[data-codigo]')) descargar(`${nombreProyecto()} 7 - Mapa del codigo.md`, codigoMarkdown());
     if (ev.target.closest('[data-conceptos]')) descargar(`${nombreProyecto()} - conceptos clave.md`, conceptosMarkdown());
     const bq = ev.target.closest('[data-bloque]');
