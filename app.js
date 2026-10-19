@@ -639,18 +639,21 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     P.actual = P.cola.shift() || null; P.visible = false; pintarPractica();
   }
 
-  // ---------- Guía del líder ----------
+  // ---------- Guía del líder (técnica) ----------
   function liderMarkdown() {
     const L = D.lider; if (!L) return '';
-    const l = [`# ${nombreProyecto()}: guía del líder (${L.nombre})`, ''];
-    L.versiones.forEach(v => l.push(`## El proyecto ${v.titulo.toLowerCase()}`, v.texto, ''));
-    l.push('## Mi papel como líder', ...L.rol.map(x => `- ${x}`), '');
+    const l = [`# ${nombreProyecto()}: guía técnica del líder (${L.nombre})`, '', L.frase, ''];
+    l.push('## El stack, pieza por pieza', '');
+    L.stack.forEach(x => l.push(`### ${x.n}`, `- Qué es: ${x.que}`, `- Para qué en ${nombreProyecto()}: ${x.uso}`, `- Cómo reconocerlo en el código: ${x.reconocer}`, `- Dónde está: ${x.donde}`, ''));
+    l.push('## Cómo se divide el código', ...L.division.map(([a, b]) => `- ${a}: ${b}`), '');
+    l.push('## Las carpetas del proyecto', ...L.carpetas.map(([a, b]) => `- ${a}: ${b}`), '');
+    l.push('## Cómo funciona cada cosa, paso a paso', '');
+    L.funciones.forEach(f => l.push(`### ${f.n}`, ...f.pasos.map((x, i) => `${i + 1}. ${x}`), ''));
+    l.push('## Las tablas de la base de datos (MySQL)', ...L.tablas.map(([a, b]) => `- ${a}: ${b}`), '');
+    l.push('## Cómo llega un cambio a internet (despliegue)', ...L.despliegue.map((x, i) => `${i + 1}. ${x}`), '');
+    l.push('## Los números', ...L.numeros.map(([n, q]) => `- ${n}: ${q}`), '');
     l.push('## Apertura', L.apertura, '', '## Cierre', L.cierre, '');
-    l.push('## Las decisiones que tomé y por qué', ...L.decisiones.map(x => `- ${x.d}: ${x.por}`), '');
-    l.push('## Los números que debo saber', ...L.numeros.map(([n, q]) => `- ${n}: ${q}`), '');
-    l.push('## Quién responde cada pregunta', ...L.reparto.map(([q, w]) => `- ${q} → ${w}`), '');
-    l.push('## Frases útiles', ...L.frases.map(([c, f]) => `- ${c}: ${f}`), '');
-    l.push('## Plan de estudio de esta noche', ...L.noche.map(([c, q]) => `- ${c}: ${q}`));
+    l.push('## Quién responde', ...L.reparto.map(([q, w]) => `- ${q} → ${w}`), '', '## Frases útiles', ...L.frases.map(([a, b]) => `- ${a}: ${b}`));
     return l.join('\n');
   }
 
@@ -658,23 +661,31 @@ Termina con 3 preguntas que podría hacer el jurado sobre esta parte, y cómo re
     const L = D.lider;
     if (!L) return '<section><h1>Guía del líder</h1></section>';
     const filas = arr => `<ul class="tabla-codigo">${arr.map(([a, b]) => `<li><strong>${esc(a)}</strong><span>${esc(b)}</span></li>`).join('')}</ul>`;
+    const pieza = x => `<details><summary>${esc(x.n)}</summary><dl class="pieza">
+        <dt>Qué es</dt><dd>${esc(x.que)}</dd>
+        <dt>Para qué en ${esc(nombreProyecto())}</dt><dd>${esc(x.uso)}</dd>
+        <dt>Cómo reconocerlo en el código</dt><dd><code>${esc(x.reconocer)}</code></dd>
+        <dt>Dónde está</dt><dd><code>${esc(x.donde)}</code></dd></dl></details>`;
     return `
       <section class="entra"><h1>Guía del líder</h1>
-        <p class="bajada">${esc(L.nombre)}: cómo explicar ${esc(nombreProyecto())} como creador y cómo guiar al equipo en la exposición.</p>
-        <div class="acciones"><button class="btn btn-2" data-lider>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button></div></section>
-      <section class="seccion"><h2>El proyecto en tres tamaños</h2><p>Practica las tres en voz alta. La de 2 minutos es la base de todo.</p>
-        <div class="acordeon">${L.versiones.map((v, i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(v.titulo)}</summary><div class="contenido lider-texto">${parrafos(v.texto)}</div></details>`).join('')}</div></section>
-      <section class="seccion"><h2>Tu papel</h2>
-        <div class="panel esencial" style="margin-top:16px"><ol class="puntos">${L.rol.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div></section>
-      <section class="seccion"><h2>Apertura y cierre</h2><p>La primera y la última frase, palabra por palabra; lo del medio, con tus palabras.</p>
+        <p class="bajada">${esc(L.frase)}</p>
+        <div class="acciones"><button class="btn btn-2" data-lider>Descargar para NotebookLM <i class="ph-bold ph-download-simple"></i></button>
+          <a class="btn btn-2" href="#/codigo"><i class="ph-bold ph-folder-open"></i>Mapa del código</a></div></section>
+      <section class="seccion"><h2>El stack, pieza por pieza</h2><p>${L.stack.length} tecnologías. Toca cada una: qué es, para qué se usa, cómo reconocerla y dónde está.</p>
+        <div class="acordeon">${L.stack.map(pieza).join('')}</div></section>
+      <section class="seccion"><h2>Cómo se divide el código</h2>${filas(L.division)}</section>
+      <section class="seccion"><h2>Las carpetas</h2>${filas(L.carpetas)}</section>
+      <section class="seccion"><h2>Cómo funciona cada cosa</h2><p>Paso a paso, con los nombres reales.</p>
+        <div class="acordeon">${L.funciones.map(f => `<details><summary>${esc(f.n)}</summary><ol class="pasos-codigo">${f.pasos.map(x => `<li>${esc(x)}</li>`).join('')}</ol></details>`).join('')}</div></section>
+      <section class="seccion"><h2>Las tablas de MySQL</h2>${filas(L.tablas)}</section>
+      <section class="seccion"><h2>Cómo llega un cambio a internet</h2>
+        <div class="panel esencial" style="margin-top:16px"><ol class="puntos">${L.despliegue.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div></section>
+      <section class="seccion"><h2>Los números</h2>${filas(L.numeros)}</section>
+      <section class="seccion"><h2>Apertura y cierre</h2>
         <div class="panel" style="margin-top:16px"><p class="frase-lbl">Apertura</p><div class="contenido lider-texto">${parrafos(L.apertura)}</div></div>
         <div class="panel"><p class="frase-lbl">Cierre</p><div class="contenido lider-texto">${parrafos(L.cierre)}</div></div></section>
-      <section class="seccion"><h2>Las decisiones que tomaste</h2><p>Como creador, el "¿por qué?" lo respondes tú.</p>
-        <div class="acordeon">${L.decisiones.map(x => `<details><summary>${esc(x.d)}</summary><ul><li>${esc(x.por)}</li></ul></details>`).join('')}</div></section>
-      <section class="seccion"><h2>Los números del líder</h2>${filas(L.numeros)}</section>
-      <section class="seccion"><h2>Quién responde cada pregunta</h2>${filas(L.reparto)}</section>
-      <section class="seccion"><h2>Frases que salvan</h2>${filas(L.frases)}</section>
-      <section class="seccion"><h2>Tu plan para esta noche</h2>${filas(L.noche)}</section>`;
+      <section class="seccion"><h2>Quién responde</h2>${filas(L.reparto)}</section>
+      <section class="seccion"><h2>Frases útiles</h2>${filas(L.frases)}</section>`;
   }
 
   function vistaGuia() {

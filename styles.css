@@ -490,3 +490,8 @@ button.chip { cursor: pointer; font: inherit; font-size: 14px; }
 .d-punta { fill: var(--texto-2); }
 
 .lider-texto { font-size: 17px; line-height: 1.65; color: var(--texto-fuerte); padding-bottom: 16px; }
+
+.pieza { margin: 0 0 18px; display: grid; grid-template-columns: 1fr; gap: 2px; }
+.pieza dt { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--texto-2); margin-top: 10px; }
+.pieza dd { margin: 0; font-size: 15.5px; line-height: 1.5; }
+.pieza code { white-space: normal; }
