@@ -64,7 +64,7 @@ window.TABLERO.codigo = {
     ]},
     { titulo: 'Crear una tarea (docente)', pasos: [
       'components/CreateTaskModal.tsx (formulario)',
-      'Opcional: AITaskAssistant.tsx:52 → /api/ai/assist → Claude llena los campos',
+      'Opcional: components/AITaskAssistant.tsx:52 → /api/ai/assist → Claude llena los campos',
       'Opcional: línea 186 → /api/upload → Cloudinary',
       'Línea 249 → POST /api/v1/tasks → requireRole("moderator")',
       'createTask (lib/services/tasks.ts:78) → INSERT en tasks, +5 puntos, notifyNewTask',
